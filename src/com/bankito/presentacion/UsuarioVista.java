@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.vista;
+package com.bankito.presentacion;
 
 import com.bankito.servicio.dto.UsuarioDto;
-import com.bankito.vista.utils.Menu;
-import com.bankito.vista.utils.MenuElement;
+import com.bankito.presentacion.utils.Menu;
+import com.bankito.presentacion.utils.MenuElement;
 import java.util.List;
 import java.util.Scanner;
 

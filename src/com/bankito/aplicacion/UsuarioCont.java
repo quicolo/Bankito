@@ -8,7 +8,7 @@ package com.bankito.aplicacion;
 import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
-import com.bankito.vista.UsuarioVista;
+import com.bankito.presentacion.UsuarioVista;
 import java.util.List;
 
 /**
