@@ -6,13 +6,17 @@
 package com.bankito;
 
 import com.bankito.aplicacion.UsuarioCont;
+import com.bankito.util.AppConfiguration;
+import java.io.IOException;
 
 /**
  *
  * @author Kike
  */
 public class Main {
-    public static void main (String args[]){
+    public static void main (String args[]) throws IOException{
+        AppConfiguration.loadProperties();
+        
         UsuarioCont usuCont = new UsuarioCont();
         usuCont.principal();
     }

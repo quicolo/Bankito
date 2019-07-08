@@ -1,14 +1,15 @@
 package com.bankito.persistencia.jdbc;
 
+import com.bankito.util.AppConfiguration;
 import java.sql.*;
 
 public class ResourceManager
 {
-    private static String JDBC_DRIVER   = "com.mysql.jdbc.Driver";
-    private static String JDBC_URL      = "jdbc:mysql://localhost/bankito?useSSL=false";
+    private static String JDBC_DRIVER   = "";
+    private static String JDBC_URL      = "";
 
-    private static String JDBC_USER     = "bankitoadmin";
-    private static String JDBC_PASSWORD = "admin";
+    private static String JDBC_USER     = "";
+    private static String JDBC_PASSWORD = "";
 
     private static Driver driver = null;
 
@@ -19,6 +20,11 @@ public class ResourceManager
         {
             try
             {
+                JDBC_DRIVER = AppConfiguration.getProperty("JDBC_DRIVER");
+                JDBC_URL = AppConfiguration.getProperty("JDBC_URL");
+                JDBC_USER = AppConfiguration.getProperty("JDBC_USER");
+                JDBC_PASSWORD = AppConfiguration.getProperty("JDBC_PASSWORD");
+                
                 Class jdbcDriverClass = Class.forName( JDBC_DRIVER );
                 driver = (Driver) jdbcDriverClass.newInstance();
                 DriverManager.registerDriver( driver );
