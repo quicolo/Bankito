@@ -6,17 +6,14 @@ import com.bankito.dominio.exceptions.CuentaNoValidaException;
 import com.bankito.dominio.exceptions.MovimientoNoValidoException;
 import com.bankito.persistencia.dao.ClienteEntidadDao;
 import com.bankito.persistencia.dao.CuentaEntidadDao;
-import com.bankito.persistencia.dao.UsuarioEntidadDao;
 import com.bankito.persistencia.dto.ClienteEntidad;
 import com.bankito.persistencia.dto.CuentaEntidad;
 import com.bankito.persistencia.dto.CuentaEntidadPk;
-import com.bankito.persistencia.dto.UsuarioEntidad;
 import com.bankito.persistencia.exceptions.CuentaEntidadDaoException;
 import com.bankito.persistencia.exceptions.DaoException;
 import com.bankito.persistencia.exceptions.MovimientoEntidadDaoException;
 import com.bankito.persistencia.factory.ClienteEntidadDaoFactory;
 import com.bankito.persistencia.factory.CuentaEntidadDaoFactory;
-import com.bankito.persistencia.factory.UsuarioEntidadDaoFactory;
 import com.bankito.persistencia.jdbc.ResourceManager;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -64,7 +61,7 @@ import java.util.Objects;
  * inicializar los campos Date a un valor por defecto que es el 01/01/1970 a las
  * 00:00:00 horas.
  * <p>
- * Además, posee un campo protected estático final llamado DELTA que indica el
+ * Además, posee un campo private estático final llamado DELTA que indica el
  * margen de error admisible al comparar dos saldos con equals.
  * <p>
  * Esta clase presenta los siguientes comportamientos como métodos
@@ -87,28 +84,28 @@ public class Cuenta implements Serializable {
      * Esta propiedad valdrá 0 para los nuevos objetos que aún no se han salvado
      * en la BD.
      */
-    protected int idCuenta;
-    protected int numEntidad;
-    protected int numSucursal;
-    protected int numDigitoControl;
-    protected long numCuenta;
-    protected float saldo;
-    protected Date fechaCreacion;
-    protected int usuarioIdUsuario;
-    protected List<Movimiento> listaMov;
+    private int idCuenta;
+    private int numEntidad;
+    private int numSucursal;
+    private int numDigitoControl;
+    private long numCuenta;
+    private float saldo;
+    private Date fechaCreacion;
+    private int usuarioIdUsuario;
+    private List<Movimiento> listaMov;
     /**
      * Si esta propiedad no es nula entonces se habrá establecido una conexión a
      * la BD utilizando el método setConnetion(Connection c) para utilizar los
      * métodos de un objeto Cuenta de forma transaccional. Si esta propiedad es
      * nula entonces se creará y cerrará una conexión nueva en cada operación.
      */
-    protected Connection conExterna;
+    private Connection conExterna;
 
     /**
      * Esta propiedad nos indica si listaMov ha sufrido cambios y hay que
      * salvarla en la BD.
      */
-    protected boolean isListaMovChanged;
+    private boolean isListaMovChanged;
 
     /**
      * Method 'CuentaEntidad'

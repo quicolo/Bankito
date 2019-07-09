@@ -35,9 +35,9 @@ import java.util.Objects;
 * @author  Enrique Royo Sánchez
 */
 public class Transferencia {
-    protected Cuenta origen, destino;
-    protected float importe;
-    protected String concepto;
+    private Cuenta origen, destino;
+    private float importe;
+    private String concepto;
 
     public Transferencia(Cuenta origen, Cuenta destino, double importe, String concepto) {
         this.origen = Objects.requireNonNull(origen,"La cuenta de origen de la transferencia no puede ser nula");

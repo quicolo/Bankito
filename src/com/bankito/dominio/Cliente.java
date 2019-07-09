@@ -53,31 +53,31 @@ public class Cliente implements Serializable
 {
         public static final Cliente NOT_FOUND = new Cliente("vacio", "vacio", "vacio", "vacio", "vacio");
         public static final Date NULL_DATE = new Date(0);
-        protected static final String MSG_NOMBRE_NULO = "El nombre del cliente no puede ser nulo";
-        protected static final String MSG_APELLIDO1_NULO = "El apellido1 del cliente no puede ser nulo";
-        protected static final String MSG_APELLIDO2_NULO = "El apellido2 del cliente no puede ser nulo";
-        protected static final String MSG_NIF_NULO = "El NIF del cliente no puede ser nulo";
-        protected static final String MSG_DIRECCION_COMPLETA_NULO = "La dirección del cliente no puede ser nulo";
-        protected static final String MSG_FECHA_CREACION_NULO="La fecha de creación del cliente no puede ser nula";
-        protected static final String MSG_FECHA_MODIFICACION_NULO="La fecha de modificación del cliente no puede ser nula";
+        private static final String MSG_NOMBRE_NULO = "El nombre del cliente no puede ser nulo";
+        private static final String MSG_APELLIDO1_NULO = "El apellido1 del cliente no puede ser nulo";
+        private static final String MSG_APELLIDO2_NULO = "El apellido2 del cliente no puede ser nulo";
+        private static final String MSG_NIF_NULO = "El NIF del cliente no puede ser nulo";
+        private static final String MSG_DIRECCION_COMPLETA_NULO = "La dirección del cliente no puede ser nulo";
+        private static final String MSG_FECHA_CREACION_NULO="La fecha de creación del cliente no puede ser nula";
+        private static final String MSG_FECHA_MODIFICACION_NULO="La fecha de modificación del cliente no puede ser nula";
         /**
          * Esta propiedad valdrá 0 para los nuevos objetos que aún no se han salvado en la BD
          */
-        protected int idCliente=0;
-        protected String nombre="";
-        protected String apellido1="";
-        protected String apellido2="";
-        protected String nif="";
-        protected String direccionCompleta="";
-        protected Date fechaCreacion;
-        protected Date fechaModificacion;
-        protected int usuarioIdUsuario=0;
+        private int idCliente=0;
+        private String nombre="";
+        private String apellido1="";
+        private String apellido2="";
+        private String nif="";
+        private String direccionCompleta="";
+        private Date fechaCreacion;
+        private Date fechaModificacion;
+        private int usuarioIdUsuario=0;
         /**
         * Si esta propiedad no es nula entonces se habrá establecido una conexión a la BD utilizando el método
         * setConnetion(Connection c) para utilizar los métodos de un objeto Cliente de forma transaccional.
         * Si esta propiedad es nula entonces se creará y cerrará una conexión nueva en cada operación.
         */
-        protected Connection conExterna;
+        private Connection conExterna;
         
         
         

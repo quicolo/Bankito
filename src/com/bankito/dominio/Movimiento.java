@@ -51,12 +51,12 @@ public class Movimiento implements Serializable
         public static final String TIPO_MOV_SALIDA = "Salida";
         public static final Date NULL_DATE = new Date(0);
         
-        protected int idMovimiento;
-	protected String concepto;
-	protected String tipo;
-	protected float importe;
-	protected Date fechaCreacion;
-	protected int cuentaIdCuenta;
+        private int idMovimiento;
+	private String concepto;
+	private String tipo;
+	private float importe;
+	private Date fechaCreacion;
+	private int cuentaIdCuenta;
         
 
 	/**

@@ -63,18 +63,18 @@ public class Usuario implements Serializable
         /**
          * Esta propiedad valdrá 0 para los nuevos objetos que aún no se han salvado en la BD
          */
-        protected int idUsuario;
-        protected String nombre;
-        protected String password;
-        protected Date fechaCreacion;
-        protected Date fechaModificacion;
+        private int idUsuario;
+        private String nombre;
+        private String password;
+        private Date fechaCreacion;
+        private Date fechaModificacion;
         
         /**
         * Si esta propiedad no es nula entonces se habrá establecido una conexión a la BD utilizando el método
         * setConnetion(Connection c) para utilizar los métodos de un objeto Usuario de forma transaccional.
         * Si esta propiedad es nula entonces se creará y cerrará una conexión nueva en cada operación.
         */
-        protected Connection conExterna;
+        private Connection conExterna;
         
         
         /**
