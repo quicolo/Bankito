@@ -319,6 +319,7 @@ public class ServicioBancarioImplTest {
 
         usuDto = instance.buscaUsuarioPorId(1);
         cueDto = instance.nuevaCuenta(usuDto);
+        System.out.println(cueDto.toString());
         assertEquals(0.0, cueDto.getSaldo(), 0.001);
         assertEquals(1, cueDto.getUsuarioIdUsuario());
 

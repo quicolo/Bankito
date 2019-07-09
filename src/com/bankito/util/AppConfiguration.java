@@ -33,4 +33,8 @@ public class AppConfiguration {
         return result == null? "NOT_FOUND": result;
     }
     
+    public static String getProperty(String nombre, String valorPorDefecto) {
+        return props.getProperty(nombre, valorPorDefecto);
+    }
+    
 }

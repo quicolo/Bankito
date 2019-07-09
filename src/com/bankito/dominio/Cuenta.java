@@ -324,6 +324,17 @@ public class Cuenta implements Serializable {
         }
     }
 
+    public static int findMaxNumCuenta(int entidad, int sucursal) throws CuentaEntidadDaoException, MovimientoEntidadDaoException {
+        CuentaEntidadDao dao = CuentaEntidadDaoFactory.create();
+
+        Object[] parametros = new Object[2];
+        parametros[0] = new Integer(entidad);
+        parametros[1] = new Integer(sucursal);
+        int max = dao.findMaxNumCuenta(parametros);
+                
+        return max;
+    }
+    
     public static List<Cuenta> findByIdCliente(int idCliente) throws CuentaEntidadDaoException, MovimientoEntidadDaoException {
         ClienteEntidadDao dao = ClienteEntidadDaoFactory.create();
         ClienteEntidad cliEnt = dao.findByPrimaryKey(idCliente);

@@ -17,12 +17,12 @@ import com.bankito.dominio.exceptions.CuentaDuplicadaException;
 import com.bankito.dominio.exceptions.CuentaNoValidaException;
 import com.bankito.dominio.exceptions.DominioException;
 import com.bankito.dominio.exceptions.MovimientoNoValidoException;
-import com.bankito.dominio.exceptions.TransferenciaNoValidaException;
 import com.bankito.dominio.exceptions.UsuarioDuplicadoException;
 import com.bankito.dominio.exceptions.UsuarioEncodePasswordException;
 import com.bankito.dominio.exceptions.UsuarioNoValidoException;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
+import com.bankito.util.AppConfiguration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,9 +37,9 @@ import java.util.logging.Logger;
  */
 class ServicioBancarioImpl implements ServicioBancario {
     
-    public static final int NUM_ENTIDAD = 101;
-    public static final int NUM_SUCURSAL = 202;
-
+    public static final int COD_ENTIDAD_CONFIG = Integer.parseInt(AppConfiguration.getProperty("COD_ENTIDAD", "101"));
+    public static final int COD_SUCURSAL_CONFIG = Integer.parseInt(AppConfiguration.getProperty("COD_SUCURSAL", "202"));
+    
     @Override
     public UsuarioDto nuevoUsuario(String nombre, String password) 
            throws UsuarioDuplicadoException, UsuarioNoValidoException {
@@ -198,9 +198,9 @@ class ServicioBancarioImpl implements ServicioBancario {
         else {
             do {
                 int num_dc = generaAleatorio(99);
-                int num_cuenta = generaAleatorio(999999999);
+                int num_cuenta = generaNumCuenta();
                 
-                cue = new Cuenta(NUM_ENTIDAD, NUM_SUCURSAL, num_dc, num_cuenta, usuDto.getIdUsuario());
+                cue = new Cuenta(COD_ENTIDAD_CONFIG, COD_SUCURSAL_CONFIG, num_dc, num_cuenta, usuDto.getIdUsuario());
                 try {
                     cue.save();
                     terminado = true;
@@ -217,9 +217,14 @@ class ServicioBancarioImpl implements ServicioBancario {
         }
     }
     
-    private int generaAleatorio(int topeMaximo) {
-        Random r = new Random(new Date().getTime());
-        return r.nextInt(topeMaximo);
+    private int generaAleatorio(int tope) {
+        Random aleatorio = new Random(System.currentTimeMillis());
+        
+        return aleatorio.nextInt(tope+1);
+    }
+    
+    private int generaNumCuenta() {
+        return Cuenta.findMaxNumCuenta(COD_ENTIDAD_CONFIG, COD_SUCURSAL_CONFIG)+1;
     }
     
     @Override

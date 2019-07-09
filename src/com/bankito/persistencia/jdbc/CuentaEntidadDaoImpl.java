@@ -58,6 +58,8 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	 * SQL DELETE statement for this table
 	 */
 	protected final String SQL_DELETE = "DELETE FROM " + getTableName() + " WHERE id_cuenta = ?";
+        
+        protected final String SQL_MAX_NUM_CUENTA = "SELECT MAX(num_cuenta) FROM " + getTableName() + " WHERE num_entidad = ? AND num_sucursal = ?";
 
 	/** 
 	 * Index of column id_cuenta
@@ -439,7 +441,55 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 	protected void reset(CuentaEntidad dto)
 	{
 	}
-
+        
+        public int findMaxNumCuenta (Object [] sqlParams) {
+            // declare variables
+		final boolean isConnSupplied = (userConn != null);
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			// get the user-specified connection or get a connection from the ResourceManager
+			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
+		
+			// construct the SQL statement
+			final String SQL = SQL_MAX_NUM_CUENTA;
+		
+		
+			System.out.println( "Executing " + SQL );
+			// prepare statement
+			stmt = conn.prepareStatement( SQL );
+			stmt.setMaxRows( maxRows );
+		
+			// bind parameters
+			for (int i=0; sqlParams!=null && i<sqlParams.length; i++ ) {
+				stmt.setObject( i+1, sqlParams[i] );
+			}
+		
+		
+			rs = stmt.executeQuery();
+                        
+                        if (rs.next()) {
+                            return rs.getInt(1);
+                        }
+			else
+                            return -1;
+		}
+		catch (Exception _e) {
+			_e.printStackTrace();
+			throw new CuentaEntidadDaoException( "Exception: " + _e.getMessage(), _e );
+		}
+		finally {
+			ResourceManager.close(rs);
+			ResourceManager.close(stmt);
+			if (!isConnSupplied) {
+				ResourceManager.close(conn);
+			}
+		
+		}
+        }
+        
 	/** 
 	 * Returns all rows from the cuenta table that match the specified arbitrary SQL statement
 	 */

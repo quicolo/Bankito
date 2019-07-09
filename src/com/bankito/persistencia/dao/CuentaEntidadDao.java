@@ -108,5 +108,6 @@ public interface CuentaEntidadDao
 	 * Returns all rows from the cuenta table that match the specified arbitrary SQL statement
 	 */
 	public CuentaEntidad[] findByDynamicWhere(String sql, Object[] sqlParams) throws CuentaEntidadDaoException;
-
+        
+        public int findMaxNumCuenta (Object [] sqlParams);
 }

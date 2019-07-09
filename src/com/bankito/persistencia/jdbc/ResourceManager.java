@@ -20,10 +20,10 @@ public class ResourceManager
         {
             try
             {
-                JDBC_DRIVER = AppConfiguration.getProperty("JDBC_DRIVER");
-                JDBC_URL = AppConfiguration.getProperty("JDBC_URL");
-                JDBC_USER = AppConfiguration.getProperty("JDBC_USER");
-                JDBC_PASSWORD = AppConfiguration.getProperty("JDBC_PASSWORD");
+                JDBC_DRIVER = AppConfiguration.getProperty("JDBC_DRIVER", "com.mysql.jdbc.Driver");
+                JDBC_URL = AppConfiguration.getProperty("JDBC_URL","jdbc:mysql://localhost/bankito?useSSL=false");
+                JDBC_USER = AppConfiguration.getProperty("JDBC_USER", "bankitoadmin");
+                JDBC_PASSWORD = AppConfiguration.getProperty("JDBC_PASSWORD", "admin");
                 
                 Class jdbcDriverClass = Class.forName( JDBC_DRIVER );
                 driver = (Driver) jdbcDriverClass.newInstance();
