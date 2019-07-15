@@ -62,7 +62,6 @@ public class UsuarioCont {
     private void accionListaUsuarios() {
         List<UsuarioDto> lista = sb.listaUsuarios();
         UsuarioVista.listaUsuarios(lista);
-        accionPrincipal();
     }
 
     private void accionAltaUsuario() {

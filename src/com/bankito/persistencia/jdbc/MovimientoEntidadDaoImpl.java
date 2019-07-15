@@ -123,10 +123,10 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			stmt.setFloat( index++, dto.getImporte() );
 			stmt.setTimestamp(index++, dto.getFechaCreacion()==null ? null : new java.sql.Timestamp( dto.getFechaCreacion().getTime() ) );
 			stmt.setInt( index++, dto.getCuentaIdCuenta() );
-			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
+//			System.out.println( "Executing " + SQL_INSERT + " with DTO: " + dto );
 			int rows = stmt.executeUpdate();
 			long t2 = System.currentTimeMillis();
-			System.out.println( rows + " rows affected (" + (t2-t1) + " ms)" );
+//			System.out.println( rows + " rows affected (" + (t2-t1) + " ms)" );
 		
 			// retrieve values from auto-increment columns
 			rs = stmt.getGeneratedKeys();
@@ -166,7 +166,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			// get the user-specified connection or get a connection from the ResourceManager
 			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 		
-			System.out.println( "Executing " + SQL_UPDATE + " with DTO: " + dto );
+//			System.out.println( "Executing " + SQL_UPDATE + " with DTO: " + dto );
 			stmt = conn.prepareStatement( SQL_UPDATE );
 			int index=1;
 			stmt.setInt( index++, dto.getIdMovimiento() );
@@ -179,7 +179,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			int rows = stmt.executeUpdate();
 			reset(dto);
 			long t2 = System.currentTimeMillis();
-			System.out.println( rows + " rows affected (" + (t2-t1) + " ms)" );
+//			System.out.println( rows + " rows affected (" + (t2-t1) + " ms)" );
 		}
 		catch (Exception _e) {
 			_e.printStackTrace();
@@ -210,12 +210,12 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			// get the user-specified connection or get a connection from the ResourceManager
 			conn = isConnSupplied ? userConn : ResourceManager.getConnection();
 		
-			System.out.println( "Executing " + SQL_DELETE + " with PK: " + pk );
+//			System.out.println( "Executing " + SQL_DELETE + " with PK: " + pk );
 			stmt = conn.prepareStatement( SQL_DELETE );
 			stmt.setInt( 1, pk.getIdMovimiento() );
 			int rows = stmt.executeUpdate();
 			long t2 = System.currentTimeMillis();
-			System.out.println( rows + " rows affected (" + (t2-t1) + " ms)" );
+//			System.out.println( rows + " rows affected (" + (t2-t1) + " ms)" );
 		}
 		catch (Exception _e) {
 			_e.printStackTrace();
@@ -427,7 +427,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			final String SQL = sql;
 		
 		
-			System.out.println( "Executing " + SQL );
+//			System.out.println( "Executing " + SQL );
 			// prepare statement
 			stmt = conn.prepareStatement( SQL );
 			stmt.setMaxRows( maxRows );
@@ -477,7 +477,7 @@ calls to this DAO, otherwise a new Connection will be allocated for each operati
 			final String SQL = SQL_SELECT + " WHERE " + sql;
 		
 		
-			System.out.println( "Executing " + SQL );
+//			System.out.println( "Executing " + SQL );
 			// prepare statement
 			stmt = conn.prepareStatement( SQL );
 			stmt.setMaxRows( maxRows );
