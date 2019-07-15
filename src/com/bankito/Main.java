@@ -18,7 +18,7 @@ public class Main {
         AppConfiguration.loadProperties();
         
         UsuarioCont usuCont = new UsuarioCont();
-        usuCont.principal();
+        usuCont.accionPrincipal();
     }
     
 }
