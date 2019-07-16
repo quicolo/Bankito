@@ -57,42 +57,21 @@ public class UsuarioVista {
     }
 
     public static String solicitaPasswordValida(String mensaje) {
-        int nota = 0;
-        String pass = "";
-        Console console = System.console();
-        ScannerWrapper sc = new ScannerWrapper().setOutOfBoundsText("La contraseña debe contener entre ");
-
-        do {
-            System.out.print(mensaje);
-            if (console != null) {
-                pass = new String(console.readPassword());
-            } else {
-                pass = sc.getString(5, 50);
-            }
-
-            PasswordChecker pc = new PasswordChecker(pass);
-            nota = pc.rateSecurity();
-
-            if (nota < NOTA_MINIMA) {
-                System.out.println("La contraseña es demasiado sencilla... hazla más compleja");
-            }
-        } while (nota < NOTA_MINIMA);
-
-        return pass;
+        PasswordChecker pc = PasswordCheckerFactory.create();
+        PasswordInput passwordInput = new PasswordInput();
+        passwordInput.setQuestionText(mensaje)
+                     .setMinLength(6)
+                     .setMaxLength(20)
+                     .setMinAcceptedQuality(4)
+                     .setPasswordChecker(pc);
+        return passwordInput.getValidatedPassword();
     }
 
     public static String solicitaPassword(String mensaje) {
-        String pass = "";
-        Console console = System.console();
-        ScannerWrapper sc = new ScannerWrapper().setOutOfBoundsText("La contraseña debe contener entre ");
-        System.out.print(mensaje);
-        if (console != null) {
-            pass = new String(console.readPassword());
-        } else {
-            pass = sc.getString(5, 50);
-        }
-
-        return pass;
+        PasswordChecker pc = PasswordCheckerFactory.create();
+        PasswordInput passwordInput = new PasswordInput();
+        passwordInput.setQuestionText(mensaje);
+        return passwordInput.getUnvalidatedPassword();
     }
 
     public static void muestraMsgOperacionOK() {

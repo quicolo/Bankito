@@ -34,7 +34,7 @@ public class ScannerWrapper {
     }
     
     public ScannerWrapper setOutOfBoundsText(String error) {
-        errorMsg = Objects.requireNonNull(error, "El texto no puede ser nulo");
+        outOfBoundsMsg = Objects.requireNonNull(error, "El texto no puede ser nulo");
         return this;
     }
     

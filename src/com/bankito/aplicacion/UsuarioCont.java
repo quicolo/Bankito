@@ -12,12 +12,7 @@ import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
 import com.bankito.presentacion.UsuarioVista;
-import static com.bankito.presentacion.UsuarioVista.COD_BAJA;
-import static com.bankito.presentacion.UsuarioVista.COD_BUSCA_NIF;
-import static com.bankito.presentacion.UsuarioVista.COD_LOGIN;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -81,33 +76,35 @@ public class UsuarioCont {
     private void accionBuscarPorNifUsuario() {
         String nombre = UsuarioVista.solicitaNif();
         UsuarioDto usu = sb.buscaUsuarioPorNif(nombre);
-        if(usu == UsuarioDto.NOT_FOUND)
+        if (usu == UsuarioDto.NOT_FOUND) {
             UsuarioVista.muestraMsgUsuarioNoEncontrado();
-        else 
+        } else {
             UsuarioVista.muestraDatosUsuario(usu);
+        }
     }
 
     private void accionBajaUsuario() {
         String nombre = UsuarioVista.solicitaNombre();
         UsuarioDto usu = sb.buscaUsuarioPorNombre(nombre);
-        if(usu == UsuarioDto.NOT_FOUND)
+        if (usu == UsuarioDto.NOT_FOUND) {
             UsuarioVista.muestraMsgUsuarioNoEncontrado();
-        else {
+        } else {
             boolean confirma = UsuarioVista.confirmaBajaUsuario();
             if (confirma) {
-                boolean result=false;
+                boolean result = false;
                 try {
                     result = sb.eliminaUsuario(usu);
                 } catch (UsuarioNoValidoException ex) {
-                    result=false;
+                    result = false;
                 }
-                if(result)
+                if (result) {
                     UsuarioVista.muestraMsgOperacionOK();
-                else
+                } else {
                     UsuarioVista.muestraMsgOperacionError();
+                }
             }
-            
-        }   
+
+        }
     }
 
     private void accionLoginUsuario() {
@@ -115,18 +112,17 @@ public class UsuarioCont {
         String nombre = UsuarioVista.solicitaNombre();
         String password = UsuarioVista.solicitaPassword("Introduce la contraseña: ");
         UsuarioDto usu;
-        
+
         try {
             usu = sb.loginUsuario(nombre, password);
-            if (usu != UsuarioDto.NOT_FOUND)
+            if (usu != UsuarioDto.NOT_FOUND) {
                 UsuarioVista.muestraMsgLoginOK();
-            else 
+            } else {
                 UsuarioVista.muestraMsgLoginError();
+            }
         } catch (UsuarioEncodePasswordException ex) {
             UsuarioVista.muestraMsgUsuarioNoValido();
         }
 
     }
 }
-
-

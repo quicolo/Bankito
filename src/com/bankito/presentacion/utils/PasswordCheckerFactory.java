@@ -9,10 +9,8 @@ package com.bankito.presentacion.utils;
  *
  * @author Kike
  */
-public interface PasswordChecker {
-    
-    public int getQuality(String password);
-    public int getLowerLimitQuality();
-    public int getUpperLimitQuality();
-    
+public class PasswordCheckerFactory {
+    public static PasswordChecker create() {
+        return new PasswordCheckerImpl();
+    }
 }
