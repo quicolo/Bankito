@@ -3,9 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/presentacion/utils/ScannerWrapper.java</file>
             <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/presentacion/UsuarioVista.java</file>
+            <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/presentacion/utils/PasswordCheckerImpl.java</file>
             <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/Main.java</file>
+            <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/presentacion/utils/PasswordChecker.java</file>
+            <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/presentacion/utils/PasswordCheckerFactory.java</file>
             <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/aplicacion/UsuarioCont.java</file>
+            <file>file:/D:/Documentos/NetBeansProjects/Bankito/ProyectoBankito/src/com/bankito/presentacion/utils/PasswordInput.java</file>
         </group>
     </open-files>
 </project-private>

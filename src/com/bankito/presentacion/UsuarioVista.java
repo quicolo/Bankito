@@ -7,7 +7,6 @@ package com.bankito.presentacion;
 
 import com.bankito.servicio.dto.UsuarioDto;
 import com.bankito.presentacion.utils.*;
-import java.io.Console;
 import java.util.List;
 
 /**
@@ -114,5 +113,10 @@ public class UsuarioVista {
 
     public static void muestraDatosUsuario(UsuarioDto usu) {
         System.out.println(usu);
+    }
+
+    public static void pausar() {
+        ScannerWrapper sc = new ScannerWrapper();
+        sc.pause();
     }
 }

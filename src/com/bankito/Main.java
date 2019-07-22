@@ -5,7 +5,7 @@
  */
 package com.bankito;
 
-import com.bankito.aplicacion.UsuarioCont;
+import com.bankito.aplicacion.MainCont;
 import com.bankito.util.AppConfiguration;
 import java.io.IOException;
 
@@ -17,8 +17,8 @@ public class Main {
     public static void main (String args[]) throws IOException{
         AppConfiguration.loadProperties();
         
-        UsuarioCont usuCont = new UsuarioCont();
-        usuCont.accionPrincipal();
+        MainCont mainCont = new MainCont();
+        mainCont.accionPrincipal();
     }
     
 }

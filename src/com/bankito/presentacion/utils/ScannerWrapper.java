@@ -14,6 +14,7 @@ public class ScannerWrapper {
     private String questionMsg = "Entrada: ";
     private String errorMsg = "Error en la entrada de datos";
     private String outOfBoundsMsg = "Valor fuera del rango permitido";
+    private String pauseMsg = "Pulsa ENTER para continuar...";
     
 
     /**
@@ -35,6 +36,11 @@ public class ScannerWrapper {
     
     public ScannerWrapper setOutOfBoundsText(String error) {
         outOfBoundsMsg = Objects.requireNonNull(error, "El texto no puede ser nulo");
+        return this;
+    }
+    
+    public ScannerWrapper setPauseText(String pause) {
+        pauseMsg = Objects.requireNonNull(pause, "El texto del mensaje de pausa no puede ser nulo");
         return this;
     }
     
@@ -522,4 +528,9 @@ public class ScannerWrapper {
         return sb.toString();
     }
     
+    public void pause() {
+        System.out.println("");
+        System.out.println(pauseMsg);
+        scanner.nextLine();
+    }
 }

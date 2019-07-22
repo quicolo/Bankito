@@ -51,6 +51,7 @@ public class UsuarioCont {
                     break;
 
             }
+            accionPausar();
         } while (opc != UsuarioVista.COD_SALIR);
     }
 
@@ -58,19 +59,20 @@ public class UsuarioCont {
         List<UsuarioDto> lista = sb.listaUsuarios();
         UsuarioVista.listaUsuarios(lista);
     }
-
-    private void accionAltaUsuario() {
+    
+    UsuarioDto accionAltaUsuario() {
         String nombre = UsuarioVista.solicitaNombre();
         String password = UsuarioVista.solicitaPasswordValida("Introduce la contraseña: ");
-        UsuarioDto usu;
+        UsuarioDto usu = UsuarioDto.NOT_FOUND;
         try {
-            sb.nuevoUsuario(nombre, password);
+            usu = sb.nuevoUsuario(nombre, password);
             UsuarioVista.muestraMsgOperacionOK();
         } catch (UsuarioDuplicadoException ex) {
             UsuarioVista.muestraMsgUsuarioDuplicado();
         } catch (UsuarioNoValidoException ex) {
             UsuarioVista.muestraMsgUsuarioNoValido();
         }
+        return usu;
     }
 
     private void accionBuscarPorNifUsuario() {
@@ -124,5 +126,9 @@ public class UsuarioCont {
             UsuarioVista.muestraMsgUsuarioNoValido();
         }
 
+    }
+
+    private void accionPausar() {
+        UsuarioVista.pausar();        
     }
 }

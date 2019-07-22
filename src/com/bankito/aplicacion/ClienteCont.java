@@ -5,24 +5,28 @@
  */
 package com.bankito.aplicacion;
 
+import com.bankito.dominio.exceptions.ClienteDuplicadoException;
+import com.bankito.dominio.exceptions.ClienteNoValidoException;
 import com.bankito.dominio.exceptions.UsuarioDuplicadoException;
 import com.bankito.dominio.exceptions.UsuarioEncodePasswordException;
 import com.bankito.dominio.exceptions.UsuarioNoValidoException;
+import com.bankito.presentacion.ClienteVista;
 import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
-import com.bankito.presentacion.UsuarioVista;
+import com.bankito.presentacion.ClienteVista;
+import com.bankito.servicio.dto.ClienteDto;
 import java.util.List;
 
 /**
  *
  * @author Kike
  */
-public class UsuarioCont {
+public class ClienteCont {
 
     private ServicioBancario sb;
 
-    public UsuarioCont() {
+    public ClienteCont() {
         sb = ServicioBancarioFactory.create();
     }
 
@@ -32,97 +36,88 @@ public class UsuarioCont {
         // que alternan entre vista-controlador-servicio
         int opc;
         do {
-            opc = UsuarioVista.menuPrincipal();
+            opc = ClienteVista.menuPrincipal();
             switch (opc) {
-                case UsuarioVista.COD_LISTAR:
-                    accionListaUsuarios();
+                case ClienteVista.COD_LISTAR:
+                    accionListaClientes();
                     break;
-                case UsuarioVista.COD_ALTA:
-                    accionAltaUsuario();
+                case ClienteVista.COD_ALTA:
+                    accionAltaCliente();
                     break;
-                case UsuarioVista.COD_LOGIN:
-                    accionLoginUsuario();
+                case ClienteVista.COD_BAJA:
+                    accionBajaCliente();
                     break;
-                case UsuarioVista.COD_BAJA:
-                    accionBajaUsuario();
-                    break;
-                case UsuarioVista.COD_BUSCA_NIF:
-                    accionBuscarPorNifUsuario();
+                case ClienteVista.COD_BUSCA_NIF:
+                    accionBuscarPorNifCliente();
                     break;
 
             }
-        } while (opc != UsuarioVista.COD_SALIR);
+            accionPausar();
+        } while (opc != ClienteVista.COD_SALIR);
     }
 
-    private void accionListaUsuarios() {
-        List<UsuarioDto> lista = sb.listaUsuarios();
-        UsuarioVista.listaUsuarios(lista);
+    private void accionListaClientes() {
+        List<ClienteDto> lista = sb.listaClientes();
+        ClienteVista.listaClientes(lista);
     }
 
-    private void accionAltaUsuario() {
-        String nombre = UsuarioVista.solicitaNombre();
-        String password = UsuarioVista.solicitaPasswordValida("Introduce la contraseña: ");
-        UsuarioDto usu;
+    private void accionAltaCliente() {
+        String nombre = ClienteVista.solicitaNombre();
+        String apellido1 = ClienteVista.solicitaApellido1();
+        String apellido2 = ClienteVista.solicitaApellido2();
+        String nif = ClienteVista.solicitaNif();
+
+        ClienteVista.muestraMsgDatosUsuario();
+
+        UsuarioCont usuCont = new UsuarioCont();
+        UsuarioDto usu = usuCont.accionAltaUsuario();
         try {
-            sb.nuevoUsuario(nombre, password);
-            UsuarioVista.muestraMsgOperacionOK();
-        } catch (UsuarioDuplicadoException ex) {
-            UsuarioVista.muestraMsgUsuarioDuplicado();
-        } catch (UsuarioNoValidoException ex) {
-            UsuarioVista.muestraMsgUsuarioNoValido();
+            sb.nuevoCliente(nombre, apellido1, apellido2, nif, nombre, usu);
+            ClienteVista.muestraMsgOperacionOK();
+        } catch (ClienteDuplicadoException ex) {
+            ClienteVista.muestraMsgClienteDuplicado();
+        } catch (ClienteNoValidoException e) {
+            ClienteVista.muestraMsgClienteNoValido();
+        } catch (UsuarioNoValidoException e) {
+            ClienteVista.muestraMsgUsuarioNoValido();
         }
     }
 
-    private void accionBuscarPorNifUsuario() {
-        String nombre = UsuarioVista.solicitaNif();
-        UsuarioDto usu = sb.buscaUsuarioPorNif(nombre);
-        if (usu == UsuarioDto.NOT_FOUND) {
-            UsuarioVista.muestraMsgUsuarioNoEncontrado();
+    private void accionBuscarPorNifCliente() {
+        String nif = ClienteVista.solicitaNif();
+        ClienteDto usu = sb.buscaClientePorNif(nif);
+        if (usu == ClienteDto.NOT_FOUND) {
+            ClienteVista.muestraMsgClienteNoEncontrado();
         } else {
-            UsuarioVista.muestraDatosUsuario(usu);
+            ClienteVista.muestraDatosCliente(usu);
         }
     }
 
-    private void accionBajaUsuario() {
-        String nombre = UsuarioVista.solicitaNombre();
-        UsuarioDto usu = sb.buscaUsuarioPorNombre(nombre);
-        if (usu == UsuarioDto.NOT_FOUND) {
-            UsuarioVista.muestraMsgUsuarioNoEncontrado();
+    private void accionBajaCliente() {
+        String nif = ClienteVista.solicitaNif();
+        ClienteDto cli = sb.buscaClientePorNif(nif);
+        if (cli == ClienteDto.NOT_FOUND) {
+            ClienteVista.muestraMsgUsuarioNoEncontrado();
         } else {
-            boolean confirma = UsuarioVista.confirmaBajaUsuario();
+            boolean confirma = ClienteVista.confirmaBajaCliente();
             if (confirma) {
                 boolean result = false;
                 try {
-                    result = sb.eliminaUsuario(usu);
-                } catch (UsuarioNoValidoException ex) {
+                    result = sb.eliminaCliente(cli);
+                } catch (ClienteNoValidoException ex) {
                     result = false;
                 }
                 if (result) {
-                    UsuarioVista.muestraMsgOperacionOK();
+                    ClienteVista.muestraMsgOperacionOK();
                 } else {
-                    UsuarioVista.muestraMsgOperacionError();
+                    ClienteVista.muestraMsgOperacionError();
                 }
             }
 
         }
     }
 
-    private void accionLoginUsuario() {
-
-        String nombre = UsuarioVista.solicitaNombre();
-        String password = UsuarioVista.solicitaPassword("Introduce la contraseña: ");
-        UsuarioDto usu;
-
-        try {
-            usu = sb.loginUsuario(nombre, password);
-            if (usu != UsuarioDto.NOT_FOUND) {
-                UsuarioVista.muestraMsgLoginOK();
-            } else {
-                UsuarioVista.muestraMsgLoginError();
-            }
-        } catch (UsuarioEncodePasswordException ex) {
-            UsuarioVista.muestraMsgUsuarioNoValido();
-        }
-
+    private void accionPausar() {
+        ClienteVista.pausar();
     }
 }
