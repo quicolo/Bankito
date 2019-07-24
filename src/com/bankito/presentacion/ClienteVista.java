@@ -19,7 +19,7 @@ public class ClienteVista {
     public static final String TXT_SALIR = "Volver al menú anterior";
     
     public static final int COD_LISTAR = 1;
-    public static final String TXT_LISTAR = "Listar cliente";
+    public static final String TXT_LISTAR = "Listar clientes";
 
     public static final int COD_ALTA = 2;
     public static final String TXT_ALTA = "Alta de cliente";
@@ -47,7 +47,7 @@ public class ClienteVista {
 
     public static void listaClientes(List<ClienteDto> lista) {
         for (ClienteDto u : lista) {
-            System.out.println(u.toString());
+            System.out.println(u.toJsonString());
         }
     }
 
@@ -91,7 +91,7 @@ public class ClienteVista {
     }
 
     public static void muestraDatosCliente(ClienteDto usu) {
-        System.out.println(usu);
+        System.out.println(usu.toJsonString());
     }
 
     public static String solicitaApellido1() {
@@ -115,5 +115,10 @@ public class ClienteVista {
     public static void pausar() {
         ScannerWrapper sc = new ScannerWrapper();
         sc.pause();
+    }
+
+    public static String solicitaDireccion() {
+        ScannerWrapper sc = new ScannerWrapper().setQuestionText("Introduce la dirección postal del cliente: ");
+        return sc.getString(1, 80);
     }
 }

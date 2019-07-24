@@ -21,7 +21,7 @@ public class ScannerWrapper {
      * Constructor. Creates a new ScannerWrapper object
      */
     public ScannerWrapper() {
-        scanner = new Scanner(System.in, "UTF-8");
+        scanner = new Scanner(System.in, "ISO-8859-1");
     }
     
     public ScannerWrapper setQuestionText(String question) {

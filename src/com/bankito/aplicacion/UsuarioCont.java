@@ -51,7 +51,8 @@ public class UsuarioCont {
                     break;
 
             }
-            accionPausar();
+            if (opc != UsuarioVista.COD_SALIR)
+                accionPausar();
         } while (opc != UsuarioVista.COD_SALIR);
     }
 
@@ -75,7 +76,7 @@ public class UsuarioCont {
         return usu;
     }
 
-    private void accionBuscarPorNifUsuario() {
+    UsuarioDto accionBuscarPorNifUsuario() {
         String nombre = UsuarioVista.solicitaNif();
         UsuarioDto usu = sb.buscaUsuarioPorNif(nombre);
         if (usu == UsuarioDto.NOT_FOUND) {
@@ -83,6 +84,7 @@ public class UsuarioCont {
         } else {
             UsuarioVista.muestraDatosUsuario(usu);
         }
+        return usu;
     }
 
     private void accionBajaUsuario() {

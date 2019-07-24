@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 /**
@@ -332,15 +333,17 @@ public class Movimiento implements Serializable
 	 */
 	public String toString()
 	{
-		StringBuffer ret = new StringBuffer();
-		ret.append( "com.bankito.persistencia.dto.MovimientoEntidad: " );
-		ret.append( "idMovimiento=" + idMovimiento );
-		ret.append( ", concepto=" + concepto );
-		ret.append( ", tipo=" + tipo );
-		ret.append( ", importe=" + importe );
-		ret.append( ", fechaCreacion=" + fechaCreacion );
-		ret.append( ", cuentaIdCuenta=" + cuentaIdCuenta );
-		return ret.toString();
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            StringBuffer ret = new StringBuffer();
+            ret.append( "Cod. Mov: " + idMovimiento );
+            ret.append( ", Concepto: " + concepto );
+            ret.append( ", Tipo: " + tipo );
+            if(tipo.equals(TIPO_MOV_SALIDA))
+                ret.append( ", Importe: -" + importe );
+            else
+                ret.append( ", Importe: +" + importe );
+            ret.append( ", Fecha alta: " + format.format(fechaCreacion));
+            return ret.toString();
 	}
 
 }

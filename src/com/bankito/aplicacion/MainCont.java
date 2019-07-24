@@ -51,7 +51,8 @@ public class MainCont {
     }
 
     private void accionMenuCuenta() {
-    
+        CuentaCont cc = new CuentaCont();
+        cc.accionPrincipal();
     }
 
 }

@@ -7,6 +7,7 @@ package com.bankito.servicio.dto;
 
 import com.bankito.dominio.Cuenta;
 import com.bankito.dominio.Movimiento;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -103,6 +104,19 @@ public class CuentaDto {
         ret.append(", saldo=" + saldo);
         ret.append(", fechaCreacion=" + fechaCreacion);
         ret.append(", usuarioIdUsuario=" + usuarioIdUsuario);
+        return ret.toString();
+    }
+    
+    public String toJsonString() {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        StringBuffer ret = new StringBuffer();
+        ret.append("Cod. Cuenta: " + idCuenta);
+        ret.append("\nEntidad: " + numEntidad);
+        ret.append("\nSucursal: " + numSucursal);
+        ret.append("\nDigitoControl: " + numDigitoControl);
+        ret.append("\nNum. Cuenta: " + numCuenta);
+        ret.append("\nSaldo: " + saldo);
+        ret.append("\nFecha alta: " + format.format(fechaCreacion)+"\n");
         return ret.toString();
     }
 }

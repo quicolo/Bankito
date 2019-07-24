@@ -6,6 +6,7 @@
 package com.bankito.servicio.dto;
 
 import com.bankito.dominio.Cliente;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -95,6 +96,7 @@ public class ClienteDto {
      * @return String
      */
     public String toString() {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         StringBuffer ret = new StringBuffer();
         ret.append("idCliente=" + idCliente);
         ret.append(", nombre=" + nombre);
@@ -102,9 +104,22 @@ public class ClienteDto {
         ret.append(", apellido2=" + apellido2);
         ret.append(", nif=" + nif);
         ret.append(", direccionCompleta=" + direccionCompleta);
-        ret.append(", fechaCreacion=" + fechaCreacion);
-        ret.append(", fechaModificacion=" + fechaModificacion);
+        ret.append(", fechaCreacion=" + format.format(fechaCreacion));
+        ret.append(", fechaModificacion=" + format.format(fechaModificacion));
         ret.append(", usuarioIdUsuario=" + usuarioIdUsuario);
+        return ret.toString();
+    }
+    
+    public String toJsonString() {
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        StringBuffer ret = new StringBuffer();
+        ret.append("Cod. Cliente: " + idCliente);
+        ret.append("\nNombre: " + nombre);
+        ret.append("\nApellido 1: " + apellido1);
+        ret.append("\nApellido 2: " + apellido2);
+        ret.append("\nNIF: " + nif);
+        ret.append("\nDireccion postal: " + direccionCompleta);
+        ret.append("\nFecha alta: " + format.format(fechaCreacion)+"\n");
         return ret.toString();
     }
 }

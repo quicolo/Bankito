@@ -20,6 +20,7 @@ public class Menu {
     private String optionMsg = "Selecciona una opción: ";
     private String optionErrorMsg = "Opcion incorrecta ";
     private List<MenuElement> lista = new ArrayList();
+    private boolean showSelectedOption = true;
 
     public Menu() {
     }
@@ -35,15 +36,20 @@ public class Menu {
     }
 
     public Menu setOptionMsg(String optionText) {
-        this.optionMsg = Objects.requireNonNull(optionText, "El título del menú no puede ser nulo");
+        this.optionMsg = Objects.requireNonNull(optionText, "El texto de la opción no puede ser nulo");
         return this;
     }
 
     public Menu setInvalidOptionMsg(String optionErrorMsg) {
-        this.optionErrorMsg = Objects.requireNonNull(optionErrorMsg, "El título del menú no puede ser nulo");
+        this.optionErrorMsg = Objects.requireNonNull(optionErrorMsg, "El texto de opción inválida no puede ser nulo");
         return this;
     }
 
+    public Menu showSelectedOption(boolean enable) {
+        this.showSelectedOption = enable;
+        return this;
+    }
+    
     public Menu addElement(MenuElement e) {
         lista.add(e);
         return this;
@@ -66,7 +72,8 @@ public class Menu {
         int opcion = sc.getInt(0, lista.size() - 1);
         
         System.out.println("");
-        System.out.println(getStringDecorated(lista.get(opcion).getTexto()));
+        if(showSelectedOption)
+            System.out.println(getStringDecorated(lista.get(opcion).getTexto()));
         
         return lista.get(opcion);
     }

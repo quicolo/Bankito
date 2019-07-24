@@ -46,7 +46,7 @@ public class UsuarioVista {
 
     public static void listaUsuarios(List<UsuarioDto> lista) {
         for (UsuarioDto u : lista) {
-            System.out.println(u.toString());
+            System.out.println(u.toJsonString());
         }
     }
 
@@ -112,7 +112,7 @@ public class UsuarioVista {
     }
 
     public static void muestraDatosUsuario(UsuarioDto usu) {
-        System.out.println(usu);
+        System.out.println(usu.toJsonString());
     }
 
     public static void pausar() {

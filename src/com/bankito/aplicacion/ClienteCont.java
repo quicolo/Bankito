@@ -7,10 +7,7 @@ package com.bankito.aplicacion;
 
 import com.bankito.dominio.exceptions.ClienteDuplicadoException;
 import com.bankito.dominio.exceptions.ClienteNoValidoException;
-import com.bankito.dominio.exceptions.UsuarioDuplicadoException;
-import com.bankito.dominio.exceptions.UsuarioEncodePasswordException;
 import com.bankito.dominio.exceptions.UsuarioNoValidoException;
-import com.bankito.presentacion.ClienteVista;
 import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
@@ -52,7 +49,8 @@ public class ClienteCont {
                     break;
 
             }
-            accionPausar();
+            if (opc != ClienteVista.COD_SALIR)
+                accionPausar();
         } while (opc != ClienteVista.COD_SALIR);
     }
 
@@ -66,13 +64,13 @@ public class ClienteCont {
         String apellido1 = ClienteVista.solicitaApellido1();
         String apellido2 = ClienteVista.solicitaApellido2();
         String nif = ClienteVista.solicitaNif();
-
+        String direc = ClienteVista.solicitaDireccion();
         ClienteVista.muestraMsgDatosUsuario();
 
         UsuarioCont usuCont = new UsuarioCont();
         UsuarioDto usu = usuCont.accionAltaUsuario();
         try {
-            sb.nuevoCliente(nombre, apellido1, apellido2, nif, nombre, usu);
+            sb.nuevoCliente(nombre, apellido1, apellido2, nif, direc, usu);
             ClienteVista.muestraMsgOperacionOK();
         } catch (ClienteDuplicadoException ex) {
             ClienteVista.muestraMsgClienteDuplicado();
@@ -83,14 +81,15 @@ public class ClienteCont {
         }
     }
 
-    private void accionBuscarPorNifCliente() {
+    ClienteDto accionBuscarPorNifCliente() {
         String nif = ClienteVista.solicitaNif();
-        ClienteDto usu = sb.buscaClientePorNif(nif);
-        if (usu == ClienteDto.NOT_FOUND) {
+        ClienteDto cli=  sb.buscaClientePorNif(nif);
+        if (cli == ClienteDto.NOT_FOUND) {
             ClienteVista.muestraMsgClienteNoEncontrado();
         } else {
-            ClienteVista.muestraDatosCliente(usu);
+            ClienteVista.muestraDatosCliente(cli);
         }
+        return cli;
     }
 
     private void accionBajaCliente() {

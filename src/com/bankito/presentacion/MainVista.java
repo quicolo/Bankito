@@ -32,6 +32,7 @@ public class MainVista {
     public static int menuPrincipal() {
         Menu m = new Menu();
         m.setTitle("MENU PRINCIPAL");
+        m.showSelectedOption(false);
 
         m.addElement(new MenuElement(COD_SALIR, TXT_SALIR));
         m.addElement(new MenuElement(COD_USUARIO, TXT_USUARIO));

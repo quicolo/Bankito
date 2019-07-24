@@ -6,6 +6,7 @@
 package com.bankito.servicio.dto;
 
 import com.bankito.dominio.Usuario;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
@@ -65,4 +66,13 @@ public class UsuarioDto {
         return ret.toString();
     }
 
+    public String toJsonString() {
+        StringBuffer ret = new StringBuffer();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        ret.append("Cod. Usuario: " + idUsuario);
+        ret.append("\nNombre: " + nombre);
+        ret.append("\nFecha alta: " + format.format(fechaCreacion)+"\n");
+        return ret.toString();
+    }
+    
 }
