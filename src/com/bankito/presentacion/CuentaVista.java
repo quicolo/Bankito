@@ -208,6 +208,18 @@ public class CuentaVista {
         ScannerWrapper sc = new ScannerWrapper().setQuestionText("Introduce el código de la cuenta de la cuenta destino: ");
         return sc.getLong(0, 999999999);
     }
+
+    public static void muestraMsgUsuarioNoLogado() {
+        System.out.println("Debes hacer login para realizar la operación");
+    }
+
+    public static void muestraErrorSesionPermisos() {
+        System.out.println("Debes estar logado y tener permisos suficientes para realizar la operación escogida");
+    }
+
+    public static void muestraMsgOperacionNoPermitida() {
+        System.out.println("Tu usuario no tiene permisos para realizar la operación escogida");
+    }
     
     
 }

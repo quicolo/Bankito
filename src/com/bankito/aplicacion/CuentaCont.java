@@ -12,8 +12,12 @@ import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
 import com.bankito.presentacion.CuentaVista;
+import com.bankito.presentacion.CuentaVista;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
+import com.bankito.servicio.exceptions.OperationNotAllowedException;
+import com.bankito.servicio.exceptions.ServicioException;
+import com.bankito.servicio.exceptions.UserNotLoggedInException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +29,8 @@ public class CuentaCont {
 
     private ServicioBancario sb;
 
-    public CuentaCont() {
-        sb = ServicioBancarioFactory.create();
+    public CuentaCont(ServicioBancario sb) {
+        this.sb = sb;
     }
 
     public void accionPrincipal() {
@@ -62,18 +66,27 @@ public class CuentaCont {
                     accionBuscarCuentasCliente();
                     break;
             }
-            if (opc != CuentaVista.COD_SALIR)
+            if (opc != CuentaVista.COD_SALIR) {
                 accionPausar();
+            }
         } while (opc != CuentaVista.COD_SALIR);
     }
 
     private void accionListaCuentas() {
-        List<CuentaDto> lista = sb.listaCuentas();
-        CuentaVista.listaCuentas(lista);
+        try {
+            List<CuentaDto> lista = sb.listaCuentas();
+            CuentaVista.listaCuentas(lista);
+        } catch (UserNotLoggedInException ex) {
+            CuentaVista.muestraMsgUsuarioNoLogado();
+        } catch (OperationNotAllowedException ex) {
+            CuentaVista.muestraMsgOperacionNoPermitida();
+        } catch (ServicioException ex) {
+            CuentaVista.muestraErrorSesionPermisos();
+        }
     }
 
     private void accionAltaCuenta() {
-        UsuarioCont usuCont = new UsuarioCont();
+        UsuarioCont usuCont = new UsuarioCont(sb);
         UsuarioDto usu = usuCont.accionBuscarPorNifUsuario();
         if (usu != UsuarioDto.NOT_FOUND) {
             try {
@@ -82,21 +95,35 @@ public class CuentaCont {
                 CuentaVista.muestraDatosCuenta(cuenta);
             } catch (CuentaNoValidaException e) {
                 CuentaVista.muestraMsgCuentaNoValida();
+            } catch (UserNotLoggedInException ex) {
+                CuentaVista.muestraMsgUsuarioNoLogado();
+            } catch (OperationNotAllowedException ex) {
+                CuentaVista.muestraMsgOperacionNoPermitida();
+            } catch (ServicioException ex) {
+                CuentaVista.muestraErrorSesionPermisos();
             }
         }
     }
 
     private List<CuentaDto> accionBuscarCuentasCliente() {
-        ClienteCont cliCont = new ClienteCont();
+        ClienteCont cliCont = new ClienteCont(sb);
         ClienteDto cli = cliCont.accionBuscarPorNifCliente();
         List<CuentaDto> listaCue = new ArrayList();
 
         if (cli != ClienteDto.NOT_FOUND) {
-            listaCue = sb.buscaCuentaPorCliente(cli);
-            if (listaCue.isEmpty()) {
-                CuentaVista.muestraMsgCuentaNoEncontrada();
-            } else {
-                CuentaVista.muestraListaCuentas(listaCue);
+            try {
+                listaCue = sb.buscaCuentaPorCliente(cli);
+                if (listaCue.isEmpty()) {
+                    CuentaVista.muestraMsgCuentaNoEncontrada();
+                } else {
+                    CuentaVista.muestraListaCuentas(listaCue);
+                }
+            } catch (UserNotLoggedInException ex) {
+                CuentaVista.muestraMsgUsuarioNoLogado();
+            } catch (OperationNotAllowedException ex) {
+                CuentaVista.muestraMsgOperacionNoPermitida();
+            } catch (ServicioException ex) {
+                CuentaVista.muestraErrorSesionPermisos();
             }
         }
         return listaCue;
@@ -111,13 +138,21 @@ public class CuentaCont {
             CuentaDto cue = CuentaVista.muestraYEligeListaCuentas(listaCue);
             boolean confirma = CuentaVista.confirmaBajaCuenta();
             if (confirma) {
-                boolean result = false;
-                result = sb.eliminaCuenta(cue);
+                try {
+                    boolean result = false;
+                    result = sb.eliminaCuenta(cue);
 
-                if (result) {
-                    CuentaVista.muestraMsgOperacionOK();
-                } else {
-                    CuentaVista.muestraMsgOperacionError();
+                    if (result) {
+                        CuentaVista.muestraMsgOperacionOK();
+                    } else {
+                        CuentaVista.muestraMsgOperacionError();
+                    }
+                } catch (UserNotLoggedInException ex) {
+                    CuentaVista.muestraMsgUsuarioNoLogado();
+                } catch (OperationNotAllowedException ex) {
+                    CuentaVista.muestraMsgOperacionNoPermitida();
+                } catch (ServicioException ex) {
+                    CuentaVista.muestraErrorSesionPermisos();
                 }
             }
 
@@ -134,15 +169,23 @@ public class CuentaCont {
         if (listaCue.isEmpty()) {
             CuentaVista.muestraMsgCuentaNoEncontrada();
         } else {
-            CuentaDto cue = CuentaVista.muestraYEligeListaCuentas(listaCue);
-            float importe = CuentaVista.solicitaImporteIngreso();
-            String concepto = CuentaVista.solicitaConceptoIngreso();
-            boolean result = sb.ingresoEnCuenta(concepto, importe, cue);
-
-            if (result) {
-                CuentaVista.muestraMsgOperacionOK();
-            } else {
-                CuentaVista.muestraMsgOperacionError();
+            try {
+                CuentaDto cue = CuentaVista.muestraYEligeListaCuentas(listaCue);
+                float importe = CuentaVista.solicitaImporteIngreso();
+                String concepto = CuentaVista.solicitaConceptoIngreso();
+                boolean result = sb.ingresoEnCuenta(concepto, importe, cue);
+                
+                if (result) {
+                    CuentaVista.muestraMsgOperacionOK();
+                } else {
+                    CuentaVista.muestraMsgOperacionError();
+                }
+            } catch (UserNotLoggedInException ex) {
+                CuentaVista.muestraMsgUsuarioNoLogado();
+            } catch (OperationNotAllowedException ex) {
+                CuentaVista.muestraMsgOperacionNoPermitida();
+            } catch (ServicioException ex) {
+                CuentaVista.muestraErrorSesionPermisos();
             }
         }
     }
@@ -153,15 +196,23 @@ public class CuentaCont {
         if (listaCue.isEmpty()) {
             CuentaVista.muestraMsgCuentaNoEncontrada();
         } else {
-            CuentaDto cue = CuentaVista.muestraYEligeListaCuentas(listaCue);
-            float importe = CuentaVista.solicitaImporteRetirada();
-            String concepto = CuentaVista.solicitaConceptoRetirada();
-            boolean result = sb.retiradaDeCuenta(concepto, importe, cue);
-
-            if (result) {
-                CuentaVista.muestraMsgOperacionOK();
-            } else {
-                CuentaVista.muestraMsgOperacionError();
+            try {
+                CuentaDto cue = CuentaVista.muestraYEligeListaCuentas(listaCue);
+                float importe = CuentaVista.solicitaImporteRetirada();
+                String concepto = CuentaVista.solicitaConceptoRetirada();
+                boolean result = sb.retiradaDeCuenta(concepto, importe, cue);
+                
+                if (result) {
+                    CuentaVista.muestraMsgOperacionOK();
+                } else {
+                    CuentaVista.muestraMsgOperacionError();
+                }
+            } catch (UserNotLoggedInException ex) {
+                CuentaVista.muestraMsgUsuarioNoLogado();
+            } catch (OperationNotAllowedException ex) {
+                CuentaVista.muestraMsgOperacionNoPermitida();
+            } catch (ServicioException ex) {
+                CuentaVista.muestraErrorSesionPermisos();
             }
         }
     }
@@ -188,28 +239,36 @@ public class CuentaCont {
         if (listaCue.isEmpty()) {
             CuentaVista.muestraMsgCuentaNoEncontrada();
         } else {
-            CuentaVista.muestraMsgEligeCuentaOrigen();
-            CuentaDto cueOrig = CuentaVista.muestraYEligeListaCuentas(listaCue);
-
-            int numEntidad = CuentaVista.solicitaNumEntidadDestino();
-            int numSucursal = CuentaVista.solicitaNumSucursalDestino();
-            int numDc = CuentaVista.solicitaNumDcDestino();
-            int numCuenta = (int) CuentaVista.solicitaNumCuentaDestino();
-
-            CuentaDto cueDest = sb.buscaCuentaPorNumCuenta(numEntidad, numSucursal, numDc, numCuenta);
-
-            if (cueDest == CuentaDto.NOT_FOUND) {
-                CuentaVista.muestraMsgCuentaNoEncontrada();
-            } else {
-                float importe = CuentaVista.solicitaImporteTransferencia();
-                String concepto = CuentaVista.solicitaConceptoTransferencia();
-                boolean result = sb.transferencia(concepto, importe, cueOrig, cueDest);
+            try {
+                CuentaVista.muestraMsgEligeCuentaOrigen();
+                CuentaDto cueOrig = CuentaVista.muestraYEligeListaCuentas(listaCue);
                 
-                if (result) {
-                    CuentaVista.muestraMsgOperacionOK();
+                int numEntidad = CuentaVista.solicitaNumEntidadDestino();
+                int numSucursal = CuentaVista.solicitaNumSucursalDestino();
+                int numDc = CuentaVista.solicitaNumDcDestino();
+                int numCuenta = (int) CuentaVista.solicitaNumCuentaDestino();
+                
+                CuentaDto cueDest = sb.buscaCuentaPorNumCuenta(numEntidad, numSucursal, numDc, numCuenta);
+                
+                if (cueDest == CuentaDto.NOT_FOUND) {
+                    CuentaVista.muestraMsgCuentaNoEncontrada();
                 } else {
-                    CuentaVista.muestraMsgOperacionError();
+                    float importe = CuentaVista.solicitaImporteTransferencia();
+                    String concepto = CuentaVista.solicitaConceptoTransferencia();
+                    boolean result = sb.transferencia(concepto, importe, cueOrig, cueDest);
+                    
+                    if (result) {
+                        CuentaVista.muestraMsgOperacionOK();
+                    } else {
+                        CuentaVista.muestraMsgOperacionError();
+                    }
                 }
+            } catch (UserNotLoggedInException ex) {
+                CuentaVista.muestraMsgUsuarioNoLogado();
+            } catch (OperationNotAllowedException ex) {
+                CuentaVista.muestraMsgOperacionNoPermitida();
+            } catch (ServicioException ex) {
+                CuentaVista.muestraErrorSesionPermisos();
             }
         }
     }

@@ -6,16 +6,20 @@
 package com.bankito.servicio;
 
 import com.bankito.dominio.Cuenta;
+import com.bankito.dominio.PerfilUsuario;
 import com.bankito.dominio.Usuario;
 import com.bankito.dominio.exceptions.ClienteDuplicadoException;
 import com.bankito.dominio.exceptions.ClienteNoValidoException;
 import com.bankito.dominio.exceptions.CuentaNoValidaException;
+import com.bankito.dominio.exceptions.DominioException;
 import com.bankito.dominio.exceptions.UsuarioDuplicadoException;
 import com.bankito.dominio.exceptions.UsuarioEncodePasswordException;
 import com.bankito.dominio.exceptions.UsuarioNoValidoException;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
+import com.bankito.servicio.dto.PerfilUsuarioDto;
 import com.bankito.servicio.dto.UsuarioDto;
+import com.bankito.servicio.exceptions.ServicioException;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -58,7 +62,11 @@ public class ServicioBancarioImplTest {
         String nombre = "";
         String password = "";
         ServicioBancario instance = ServicioBancarioFactory.create();
-        UsuarioDto result = instance.nuevoUsuario(nombre, password);
+        
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        UsuarioDto result = instance.nuevoUsuario(nombre, password, perfilDto);
+        
         instance.eliminaUsuario(result);
     }
 
@@ -71,7 +79,9 @@ public class ServicioBancarioImplTest {
         String nombre = "Test2"; // Usuario de prueba existente
         String password = "contraseña";
         ServicioBancario instance = ServicioBancarioFactory.create();
-        UsuarioDto result = instance.nuevoUsuario(nombre, password);
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        UsuarioDto result = instance.nuevoUsuario(nombre, password, perfilDto);
         instance.eliminaUsuario(result);
     }
 
@@ -84,26 +94,34 @@ public class ServicioBancarioImplTest {
         String nombre = "Prueba";
         String password = "Prueba";
         ServicioBancario instance = ServicioBancarioFactory.create();
-        UsuarioDto result = instance.nuevoUsuario(nombre, password);
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        UsuarioDto result = instance.nuevoUsuario(nombre, password, perfilDto);
         assertEquals("Prueba", result.getNombre());
         instance.eliminaUsuario(result);
     }
 
     /**
-     * Test of loginUsuario method, of class Servithrows
-     * UsuarioEncodePasswordException cioBancarioImpl.
+     * Test of loginLogoutUsuario methods, of class ServicioBancarioImpl
+     * throws
+     * UsuarioEncodePasswordException .
      */
     @Test
-    public void testLoginUsuario() throws UsuarioEncodePasswordException, UsuarioDuplicadoException, UsuarioNoValidoException {
-        System.out.println("loginUsuario");
+    public void testLoginLogoutUsuario() throws UsuarioEncodePasswordException, UsuarioDuplicadoException, UsuarioNoValidoException, DominioException, ServicioException {
+        System.out.println("loginLogoutUsuario");
         String nombre = "Prueba";
         String password = "Prueba";
         ServicioBancario instance = ServicioBancarioFactory.create();
-        UsuarioDto usu = instance.nuevoUsuario(nombre, password);
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        UsuarioDto usu = instance.nuevoUsuario(nombre, password, perfilDto);
 
         UsuarioDto result = instance.loginUsuario(nombre, password);
         assertEquals(usu.getIdUsuario(), result.getIdUsuario());
         assertEquals(usu.getNombre(), result.getNombre());
+        
+        boolean resLogout = instance.logoutUsuario();
+        assertTrue(resLogout);
         instance.eliminaUsuario(usu);
 
         result = instance.loginUsuario(nombre, "Otra password");
@@ -112,18 +130,26 @@ public class ServicioBancarioImplTest {
         result = instance.loginUsuario("No existe", "Otra password");
         assertEquals(UsuarioDto.NOT_FOUND, result);
 
+        resLogout = instance.logoutUsuario();
+        assertFalse(resLogout);
+        
     }
 
+    
+    
+    
     /**
      * Test of eliminaUsuario method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testEliminaUsuarioBorradoValido() throws UsuarioDuplicadoException, UsuarioNoValidoException {
+    public void testEliminaUsuarioBorradoValido() throws UsuarioDuplicadoException, UsuarioNoValidoException, ServicioException {
         System.out.println("eliminaUsuario");
         String nombre = "Prueba";
         String password = "Prueba";
         ServicioBancario instance = ServicioBancarioFactory.create();
-        UsuarioDto result = instance.nuevoUsuario(nombre, password);
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        UsuarioDto result = instance.nuevoUsuario(nombre, password, perfilDto);
         boolean borrado = instance.eliminaUsuario(result);
         assertTrue(borrado);
         Usuario usu = Usuario.findByNombre("Prueba");
@@ -134,7 +160,7 @@ public class ServicioBancarioImplTest {
      * Test of eliminaUsuario method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testEliminaUsuarioBorradoNoEncontrado() throws UsuarioDuplicadoException, UsuarioNoValidoException {
+    public void testEliminaUsuarioBorradoNoEncontrado() throws UsuarioDuplicadoException, UsuarioNoValidoException, ServicioException {
         System.out.println("eliminaUsuario");
         ServicioBancario instance = ServicioBancarioFactory.create();
         UsuarioDto result = new UsuarioDto("No Existe");
@@ -148,7 +174,7 @@ public class ServicioBancarioImplTest {
      * Test of listaUsuarios method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testListaUsuarios() {
+    public void testListaUsuarios() throws ServicioException {
         System.out.println("listaUsuarios");
         ServicioBancario instance = ServicioBancarioFactory.create();
 
@@ -164,7 +190,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaUsuarioPorNif method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaUsuarioPorNif() {
+    public void testBuscaUsuarioPorNif() throws ServicioException {
         System.out.println("buscaUsuarioPorNif");
         String nif = "12345678A";
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -182,7 +208,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaUsuarioPorId method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaUsuarioPorId() throws UsuarioDuplicadoException, UsuarioNoValidoException {
+    public void testBuscaUsuarioPorId() throws UsuarioDuplicadoException, UsuarioNoValidoException, ServicioException {
         System.out.println("buscaUsuarioPorId");
         int idUsuario = 0;
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -192,7 +218,11 @@ public class ServicioBancarioImplTest {
 
         String nombre = "Prueba";
         String password = "Prueba";
-        UsuarioDto insertado = instance.nuevoUsuario(nombre, password);
+        
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        
+        UsuarioDto insertado = instance.nuevoUsuario(nombre, password, perfilDto);
         assertEquals("Prueba", insertado.getNombre());
 
         UsuarioDto buscado = instance.buscaUsuarioPorId(insertado.getIdUsuario());
@@ -206,7 +236,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaUsuarioPorNombre method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaUsuarioPorNombre() {
+    public void testBuscaUsuarioPorNombre() throws ServicioException {
         System.out.println("buscaUsuarioPorNombre");
         String nombre = "Test1";
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -221,24 +251,82 @@ public class ServicioBancarioImplTest {
     }
 
     /**
+     * Test of listaPerfilesUsuarios method, of class ServicioBancarioImpl.
+     */
+    @Test
+    public void testListaPerfilesUsuarios() throws ServicioException {
+        System.out.println("listaPerfilesUsuarios");
+        ServicioBancario instance = ServicioBancarioFactory.create();
+
+        List<PerfilUsuarioDto> result = instance.listaPerfilesUsuarios();
+        assertTrue(result.size() >= 2);
+
+        for (PerfilUsuarioDto u : result) {
+            System.out.println(u);
+        }
+    }
+    
+    
+    /**
+     * Test of buscaPerfilUsuarioPorId method, of class ServicioBancarioImpl.
+     */
+    @Test
+    public void testBuscaPerfilUsuarioPorId() throws ServicioException {
+        System.out.println("buscaPerfilUsuarioPorId");
+        String nombre = "Cliente";
+        ServicioBancario instance = ServicioBancarioFactory.create();
+
+        PerfilUsuarioDto result = instance.buscaPerfilUsuarioPorId(3);
+        assertEquals(nombre, result.getNombre());
+        assertEquals(3, result.getIdPerfilUsuario());
+
+        result = instance.buscaPerfilUsuarioPorNombre("NO EXISTE");
+        assertEquals(PerfilUsuarioDto.NOT_FOUND, result);
+
+    }
+    
+    
+    /**
+     * Test of buscaPerfilUsuarioPorNombre method, of class ServicioBancarioImpl.
+     */
+    @Test
+    public void testBuscaPerfilUsuarioPorNombre() throws ServicioException {
+        System.out.println("buscaPerfilUsuarioPorNombre");
+        String nombre = "Cliente";
+        ServicioBancario instance = ServicioBancarioFactory.create();
+
+        PerfilUsuarioDto result = instance.buscaPerfilUsuarioPorNombre(nombre);
+        assertEquals(nombre, result.getNombre());
+        assertEquals(3, result.getIdPerfilUsuario());
+
+        result = instance.buscaPerfilUsuarioPorNombre("NO EXISTE");
+        assertEquals(PerfilUsuarioDto.NOT_FOUND, result);
+
+    }
+    
+    
+    
+    /**
      * Test of testNuevoCliente method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testNuevoCliente() throws UsuarioDuplicadoException, UsuarioNoValidoException, ClienteDuplicadoException, ClienteNoValidoException {
+    public void testNuevoCliente() throws UsuarioDuplicadoException, UsuarioNoValidoException, ClienteDuplicadoException, ClienteNoValidoException, ServicioException {
         System.out.println("nuevoCliente");
         ServicioBancario instance = ServicioBancarioFactory.create();
 
-        UsuarioDto usuDto = instance.nuevoUsuario("Probando", "Probando");
-        ClienteDto cliDto = instance.nuevoCliente("Probando", "Probando", "Probando", "NIF", "Direct", usuDto);
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        PerfilUsuarioDto perfilDto = new PerfilUsuarioDto(perfil);
+        UsuarioDto usuDto = instance.nuevoUsuario("Probando1", "Probando1", perfilDto);
+        ClienteDto cliDto = instance.nuevoCliente("Probando1Nombre", "Probando1Ape1", "Probando1Ape2", "NIF", "Direct", usuDto);
 
-        assertEquals("Probando", cliDto.getNombre());
-        assertEquals("Probando", cliDto.getApellido1());
-        assertEquals("Probando", cliDto.getApellido2());
+        assertEquals("Probando1Nombre", cliDto.getNombre());
+        assertEquals("Probando1Ape1", cliDto.getApellido1());
+        assertEquals("Probando1Ape2", cliDto.getApellido2());
         assertEquals("NIF", cliDto.getNif());
         assertEquals("Direct", cliDto.getDireccionCompleta());
         assertEquals(usuDto.getIdUsuario(), cliDto.getUsuarioIdUsuario());
 
-        UsuarioDto usuDto2 = instance.nuevoUsuario("Probando2", "Probando2");
+        UsuarioDto usuDto2 = instance.nuevoUsuario("Probando2", "Probando2", perfilDto);
         ClienteDto cliDto2 = instance.nuevoCliente("Probando2", "Probando2", "Probando", "NIF2", "Direct", usuDto2);
 
         instance.eliminaCliente(cliDto);
@@ -252,7 +340,7 @@ public class ServicioBancarioImplTest {
      * Test of listaClientes method, of class ServicioBancarioImpl.
      */
     @Test
-    public void listaClientes() {
+    public void listaClientes() throws ServicioException {
         System.out.println("listaClientes");
         ServicioBancario instance = ServicioBancarioFactory.create();
 
@@ -270,7 +358,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaClientePorNif method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaClientePorNif() {
+    public void testBuscaClientePorNif() throws ServicioException {
         System.out.println("buscaClientePorNif");
         ServicioBancario instance = ServicioBancarioFactory.create();
 
@@ -289,7 +377,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaClientePorId method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaClientePorId() {
+    public void testBuscaClientePorId() throws ServicioException {
         System.out.println("buscaClientePorId");
         ServicioBancario instance = ServicioBancarioFactory.create();
 
@@ -309,7 +397,7 @@ public class ServicioBancarioImplTest {
      * ServicioBancarioImpl.
      */
     @Test
-    public void testNuevaCuentaYEliminaCuenta() throws CuentaNoValidaException {
+    public void testNuevaCuentaYEliminaCuenta() throws CuentaNoValidaException, ServicioException {
         System.out.println("nuevaCuenta");
         ServicioBancario instance = ServicioBancarioFactory.create();
 
@@ -331,7 +419,7 @@ public class ServicioBancarioImplTest {
      * Test of listaCuentas method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testListaCuentas() {
+    public void testListaCuentas() throws ServicioException {
 
         System.out.println("listaCuentas");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -351,7 +439,7 @@ public class ServicioBancarioImplTest {
      * Test of ingresoEnCuenta method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testIngresoEnCuenta() throws CuentaNoValidaException {
+    public void testIngresoEnCuenta() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("ingresoEnCuenta");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -372,7 +460,7 @@ public class ServicioBancarioImplTest {
      * Test of retiradaDeCuenta method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testRetiradaDeCuenta() throws CuentaNoValidaException {
+    public void testRetiradaDeCuenta() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("retiradaDeCuenta");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -394,7 +482,7 @@ public class ServicioBancarioImplTest {
      * Test of transferencia method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testTransferencia() throws CuentaNoValidaException {
+    public void testTransferencia() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("transferencia");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -422,7 +510,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaCuentaPorUsuario method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaCuentaPorUsuario() throws CuentaNoValidaException {
+    public void testBuscaCuentaPorUsuario() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("buscaCuentaPorUsuario");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -444,7 +532,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaCuentaPorCliente method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaCuentaPorCliente() throws CuentaNoValidaException {
+    public void testBuscaCuentaPorCliente() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("buscaCuentaPorCliente");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -466,7 +554,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaCuentaPorNumCuenta method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaCuentaPorNumCuenta() throws CuentaNoValidaException {
+    public void testBuscaCuentaPorNumCuenta() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("buscaCuentaPorNumCuenta");
         ServicioBancario instance = ServicioBancarioFactory.create();
@@ -482,7 +570,7 @@ public class ServicioBancarioImplTest {
      * Test of buscaCuentaPorIdCuenta method, of class ServicioBancarioImpl.
      */
     @Test
-    public void testBuscaCuentaPorIdCuenta() throws CuentaNoValidaException {
+    public void testBuscaCuentaPorIdCuenta() throws CuentaNoValidaException, ServicioException {
 
         System.out.println("buscaCuentaPorIdCuenta");
         ServicioBancario instance = ServicioBancarioFactory.create();

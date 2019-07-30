@@ -45,6 +45,11 @@ public interface UsuarioEntidadDao
 	public UsuarioEntidad[] findAll() throws UsuarioEntidadDaoException;
 
 	/** 
+	 * Returns all rows from the usuario table that match the criteria 'perfil_usuario_id_perfil = :perfilUsuarioIdPerfil'.
+	 */
+	public UsuarioEntidad[] findByPerfilUsuario(int perfilUsuarioIdPerfil) throws UsuarioEntidadDaoException;
+
+	/** 
 	 * Returns all rows from the usuario table that match the criteria 'id_usuario = :idUsuario'.
 	 */
 	public UsuarioEntidad[] findWhereIdUsuarioEquals(int idUsuario) throws UsuarioEntidadDaoException;
@@ -68,6 +73,11 @@ public interface UsuarioEntidadDao
 	 * Returns all rows from the usuario table that match the criteria 'fecha_modificacion = :fechaModificacion'.
 	 */
 	public UsuarioEntidad[] findWhereFechaModificacionEquals(Date fechaModificacion) throws UsuarioEntidadDaoException;
+
+	/** 
+	 * Returns all rows from the usuario table that match the criteria 'perfil_usuario_id_perfil = :perfilUsuarioIdPerfil'.
+	 */
+	public UsuarioEntidad[] findWherePerfilUsuarioIdPerfilEquals(int perfilUsuarioIdPerfil) throws UsuarioEntidadDaoException;
 
 	/** 
 	 * Sets the value of maxRows

@@ -27,6 +27,9 @@ public class UsuarioVista {
     public static final String TXT_BAJA = "Baja de usuario";
     public static final int COD_BUSCA_NIF = 5;
     public static final String TXT_BUSCA_NIF = "Busca un usuario por su NIF";
+    public static final int COD_LOGOUT = 6;
+    public static final String TXT_LOGOUT = "Logout de usuario";
+    
     private static final int NOTA_MINIMA = 4;
 
     public static int menuPrincipal() {
@@ -37,6 +40,7 @@ public class UsuarioVista {
         m.addElement(new MenuElement(COD_LISTAR, TXT_LISTAR));
         m.addElement(new MenuElement(COD_ALTA, TXT_ALTA));
         m.addElement(new MenuElement(COD_LOGIN, TXT_LOGIN));
+        m.addElement(new MenuElement(COD_LOGOUT, TXT_LOGOUT));
         m.addElement(new MenuElement(COD_BAJA, TXT_BAJA));
         m.addElement(new MenuElement(COD_BUSCA_NIF, TXT_BUSCA_NIF));
 
@@ -52,7 +56,7 @@ public class UsuarioVista {
 
     public static String solicitaNombre() {
         ScannerWrapper sc = new ScannerWrapper().setQuestionText("Introduce el nombre de usuario: ");
-        return sc.getString(3, 10);
+        return sc.getString(3, 15);
     }
 
     public static String solicitaPasswordValida(String mensaje) {
@@ -118,5 +122,17 @@ public class UsuarioVista {
     public static void pausar() {
         ScannerWrapper sc = new ScannerWrapper();
         sc.pause();
+    }
+
+    public static void muestraMsgUsuarioNoLogado() {
+        System.out.println("Debes hacer login para realizar la operación");
+    }
+
+    public static void muestraErrorSesionPermisos() {
+        System.out.println("Debes estar logado y tener permisos suficientes para realizar la operación escogida");
+    }
+
+    public static void muestraMsgOperacionNoPermitida() {
+        System.out.println("Tu usuario no tiene permisos para realizar la operación escogida");
     }
 }

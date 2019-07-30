@@ -47,7 +47,8 @@ public class UsuarioTest {
      */
     @Test(expected = NullPointerException.class)
     public void testConstructorNombreNulo() {
-        Usuario instance = new Usuario(null, "password");
+        PerfilUsuario per = new PerfilUsuario("Perfil", "Perfil descripción");
+        Usuario instance = new Usuario(null, "password", per);
     }
     
     /**
@@ -55,14 +56,15 @@ public class UsuarioTest {
      */
     @Test(expected = NullPointerException.class)
     public void testConstructorPasswordNula() {
-        Usuario instance = new Usuario("nombre", null);
+        PerfilUsuario per = new PerfilUsuario("Perfil", "Perfil descripción");
+        Usuario instance = new Usuario("nombre", null, per);
     }
     
     /**
      * Test of isValid method, of class Usuario.
      */
     @Test
-    public void testIsStateValidNotFoundObject() {
+    public void testIsValidNotFoundObject() {
         System.out.println("isStateValid - Not found object test");
         Usuario instance = Usuario.NOT_FOUND;
         assertFalse(instance.isValid());
@@ -72,13 +74,14 @@ public class UsuarioTest {
      * Test of isValid method, of class Usuario.
      */
     @Test
-    public void testIsStateValidCampoCadenaVacia() {
+    public void testIsValidCampoCadenaVacia() {
         System.out.println("isStateValid - One empty string field test");
-        Usuario instance = new Usuario("nombre", "");
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        Usuario instance = new Usuario("nombre", "", perfil);
         instance.isValid();
         assertFalse(instance.isValid());
         
-        instance = new Usuario("", "password");
+        instance = new Usuario("", "password", perfil);
         assertFalse(instance.isValid());
 
     }
@@ -89,7 +92,8 @@ public class UsuarioTest {
     @Test
     public void testIsStateValidObjetoValido() {
         System.out.println("isStateValid - Valid Object");
-        Usuario instance = new Usuario("juan", "supercontraseña");
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        Usuario instance = new Usuario("juan", "supercontraseña", perfil);
         assertTrue(instance.isValid());
     }
     
@@ -97,8 +101,9 @@ public class UsuarioTest {
     public void testCRUD() throws SQLException, DominioException {
         
         // CREATE/INSERT: Creamos dos usuarios de prueba
-        Usuario instance1 = new Usuario("Prueba1", "Prueba1");
-        Usuario instance2 = new Usuario("Prueba2", "Prueba2");
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        Usuario instance1 = new Usuario("Prueba1", "Prueba1", perfil);
+        Usuario instance2 = new Usuario("Prueba2", "Prueba2", perfil);
         instance1.save();
         instance2.save();
 
@@ -165,7 +170,8 @@ public class UsuarioTest {
         System.out.println("tryLogin");
         String nombre = "NombreUsuario";
         String password = "supercontraseña";
-        Usuario instance = new Usuario(nombre, password);
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        Usuario instance = new Usuario(nombre, password, perfil);
         instance.save();
         
         Usuario result = Usuario.tryLogin(nombre, password);

@@ -74,7 +74,8 @@ public class MovimientoTest {
     @Test
     public void testCRUD() throws DominioException, SQLException, CuentaEntidadDaoException, MovimientoEntidadDaoException {
         // Creamos un usuario auxiliar de prueba
-        Usuario usuario = new Usuario("prueba", "prueba");
+        PerfilUsuario perfil = PerfilUsuario.findByNombre("Cliente");
+        Usuario usuario = new Usuario("prueba", "prueba", perfil);
         // Lo insertamos en la base de datos
         usuario.save();
         

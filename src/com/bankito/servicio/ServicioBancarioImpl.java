@@ -8,6 +8,9 @@ package com.bankito.servicio;
 import com.bankito.dominio.Cliente;
 import com.bankito.dominio.Cuenta;
 import com.bankito.dominio.Movimiento;
+import com.bankito.dominio.Operacion;
+import com.bankito.dominio.PerfilUsuario;
+import com.bankito.dominio.Sesion;
 import com.bankito.dominio.Transferencia;
 import com.bankito.servicio.dto.UsuarioDto;
 import com.bankito.dominio.Usuario;
@@ -22,14 +25,15 @@ import com.bankito.dominio.exceptions.UsuarioEncodePasswordException;
 import com.bankito.dominio.exceptions.UsuarioNoValidoException;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
+import com.bankito.servicio.dto.PerfilUsuarioDto;
+import com.bankito.servicio.exceptions.OperationNotAllowedException;
+import com.bankito.servicio.exceptions.ServicioException;
+import com.bankito.servicio.exceptions.UserNotLoggedInException;
 import com.bankito.util.AppConfiguration;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -40,27 +44,57 @@ class ServicioBancarioImpl implements ServicioBancario {
     public static final int COD_ENTIDAD_CONFIG = Integer.parseInt(AppConfiguration.getProperty("COD_ENTIDAD", "101"));
     public static final int COD_SUCURSAL_CONFIG = Integer.parseInt(AppConfiguration.getProperty("COD_SUCURSAL", "202"));
     
+    private UsuarioDto loggedUser = null;
+    private boolean isLoggedUser = false;
+    
     @Override
-    public UsuarioDto nuevoUsuario(String nombre, String password) 
-           throws UsuarioDuplicadoException, UsuarioNoValidoException {
+    public UsuarioDto nuevoUsuario(String nombre, String password, PerfilUsuarioDto perfil) 
+           throws UsuarioDuplicadoException, UsuarioNoValidoException, ServicioException {
+        checkPermissions(ServicioBancario.OPER_NUEVO_USUARIO);
         
-        Usuario usu = new Usuario(nombre, password);
+        Usuario usu = new Usuario(nombre, password, new PerfilUsuario(perfil));
         usu.save();
         UsuarioDto dto = new UsuarioDto(usu);
         return dto;
     }
     
     @Override
-    public UsuarioDto loginUsuario(String nombre, String password) throws UsuarioEncodePasswordException {
+    public UsuarioDto loginUsuario(String nombre, String password) throws UsuarioEncodePasswordException, DominioException, ServicioException {
+        Sesion sesion;
         Usuario usu = Usuario.tryLogin(nombre, password);
-        if(usu == Usuario.NOT_FOUND)
+        
+        if(usu == Usuario.NOT_FOUND) {
             return UsuarioDto.NOT_FOUND;
-        else
+        }
+        else {
+            if(isLoggedUser == true) {
+                sesion = new Sesion(Sesion.LOGOUT_ACTION, this.loggedUser.getIdUsuario());
+                sesion.save();
+            }
+            sesion = new Sesion(Sesion.LOGIN_OK_ACTION, usu.getIdUsuario());
+            sesion.save();
+            this.loggedUser = new UsuarioDto(usu);
+            this.isLoggedUser = true;
             return new UsuarioDto(usu);
+        }
     }
-
+    
     @Override
-    public boolean eliminaUsuario(UsuarioDto usu) throws UsuarioNoValidoException {
+    public boolean logoutUsuario() throws DominioException, ServicioException {
+        if (isLoggedUser == true) {
+            Sesion sesion = new Sesion(Sesion.LOGOUT_ACTION, loggedUser.getIdUsuario());
+            sesion.save();
+            this.loggedUser = null;
+            this.isLoggedUser = false;
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    @Override
+    public boolean eliminaUsuario(UsuarioDto usu) throws UsuarioNoValidoException, ServicioException {
+        checkPermissions(ServicioBancario.OPER_ELIMINA_USUARIO);
         Usuario u = Usuario.findByIdUsuario(usu.getIdUsuario());
         if (u == Usuario.NOT_FOUND)
            return false;
@@ -71,7 +105,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public List<UsuarioDto> listaUsuarios() {
+    public List<UsuarioDto> listaUsuarios() throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_LISTA_USUARIOS);
         List<Usuario> listaUsu = Usuario.findAll();
         List<UsuarioDto> listaDto = new ArrayList();
         
@@ -83,7 +118,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public UsuarioDto buscaUsuarioPorNif(String nif) {
+    public UsuarioDto buscaUsuarioPorNif(String nif) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_USUARIO_POR_NIF);
         Cliente cli = Cliente.findByNif(nif);
         
         if (cli == Cliente.NOT_FOUND)
@@ -99,7 +135,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public UsuarioDto buscaUsuarioPorId(int idUsuario) {
+    public UsuarioDto buscaUsuarioPorId(int idUsuario) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_USUARIO_POR_ID);
         Usuario usu = Usuario.findByIdUsuario(idUsuario);
         if (usu == Usuario.NOT_FOUND)
             return UsuarioDto.NOT_FOUND;
@@ -108,7 +145,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public UsuarioDto buscaUsuarioPorNombre(String nombre) {
+    public UsuarioDto buscaUsuarioPorNombre(String nombre) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_USUARIO_POR_NOMBRE);
         Usuario usu = Usuario.findByNombre(nombre);
         
         if (usu == Usuario.NOT_FOUND)
@@ -118,9 +156,48 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
+    public List<PerfilUsuarioDto> listaPerfilesUsuarios() throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_LISTA_PERFILES);
+        List<PerfilUsuario> listaPer = PerfilUsuario.findAll();
+        List<PerfilUsuarioDto> listaDto = new ArrayList();
+        
+        for(PerfilUsuario u : listaPer) {
+            PerfilUsuarioDto dto = new PerfilUsuarioDto(u);
+            listaDto.add(dto);
+        }
+        return listaDto;
+    }
+    
+    @Override
+    public PerfilUsuarioDto buscaPerfilUsuarioPorId(int idPerfilUsuario) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_PERFIL_POR_ID);
+        PerfilUsuario per = PerfilUsuario.findByIdPerfilUsuario(idPerfilUsuario);
+        
+        if (per == PerfilUsuario.NOT_FOUND)
+            return PerfilUsuarioDto.NOT_FOUND;
+        else
+            return new PerfilUsuarioDto(per);
+    }
+    
+    @Override
+    public PerfilUsuarioDto buscaPerfilUsuarioPorNombre(String nombre) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_PERFIL_POR_NOMBRE);
+        PerfilUsuario per = PerfilUsuario.findByNombre(nombre);
+        
+        if (per == PerfilUsuario.NOT_FOUND)
+            return PerfilUsuarioDto.NOT_FOUND;
+        else
+            return new PerfilUsuarioDto(per);
+    }
+    
+    
+    
+    @Override
     public ClienteDto nuevoCliente(String nombre, String apellido1, 
             String apellido2, String nif, String direc, UsuarioDto uDto)
-            throws ClienteDuplicadoException, UsuarioNoValidoException, ClienteNoValidoException {
+            throws ClienteDuplicadoException, UsuarioNoValidoException, ClienteNoValidoException,
+                   ServicioException {
+        checkPermissions(ServicioBancario.OPER_NUEVO_CLIENTE);
         // Comprueba si ya existe el cliente
         Objects.requireNonNull(nif,"El NIF del cliente no puede ser nulo");
         Cliente busqueda = Cliente.findByNif(nif);
@@ -142,7 +219,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
-    public boolean eliminaCliente(ClienteDto cliDto) throws ClienteNoValidoException {
+    public boolean eliminaCliente(ClienteDto cliDto) throws ClienteNoValidoException, ServicioException {
+        checkPermissions(ServicioBancario.OPER_ELIMINA_CLIENTE);
         Objects.requireNonNull(cliDto, "El objeto ClienteDto no puede ser nulo");
         Cliente cli = Cliente.findByIdCliente(cliDto.getIdCliente());
         if(cli == Cliente.NOT_FOUND) 
@@ -154,7 +232,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
-    public List<ClienteDto> listaClientes() {
+    public List<ClienteDto> listaClientes() throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_LISTA_CLIENTES);
         List<Cliente> listaCli = Cliente.findAll();
         List<ClienteDto> listaDto = new ArrayList();
         
@@ -166,7 +245,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
-    public ClienteDto buscaClientePorNif(String nif) {
+    public ClienteDto buscaClientePorNif(String nif) throws ServicioException{
+        checkPermissions(ServicioBancario.OPER_BUSCA_CLIENTE_POR_NIF);
         Objects.requireNonNull(nif, "El NIF del cliente no puede ser nulo");
         Cliente cli = Cliente.findByNif(nif);
         if (cli == Cliente.NOT_FOUND) 
@@ -176,7 +256,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
-    public ClienteDto buscaClientePorId(int idCliente) {
+    public ClienteDto buscaClientePorId(int idCliente) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_CLIENTE_POR_ID);
         Cliente cli = Cliente.findByIdCliente(idCliente);
         if (cli == Cliente.NOT_FOUND) 
             return ClienteDto.NOT_FOUND;
@@ -185,8 +266,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
-    public CuentaDto nuevaCuenta(UsuarioDto usuDto) throws CuentaNoValidaException {
-        
+    public CuentaDto nuevaCuenta(UsuarioDto usuDto) throws CuentaNoValidaException, ServicioException {
+        checkPermissions(ServicioBancario.OPER_NUEVA_CUENTA);
         Cuenta cue;
         Usuario usu = Usuario.findByIdUsuario(usuDto.getIdUsuario());
         boolean terminado = false;
@@ -217,18 +298,19 @@ class ServicioBancarioImpl implements ServicioBancario {
         }
     }
     
-    private int generaAleatorio(int tope) {
+    private int generaAleatorio(int tope) throws ServicioException {
         Random aleatorio = new Random(System.currentTimeMillis());
         
         return aleatorio.nextInt(tope+1);
     }
     
-    private int generaNumCuenta() {
+    private int generaNumCuenta() throws ServicioException{
         return Cuenta.findMaxNumCuenta(COD_ENTIDAD_CONFIG, COD_SUCURSAL_CONFIG)+1;
     }
     
     @Override
-    public boolean eliminaCuenta(CuentaDto c) {
+    public boolean eliminaCuenta(CuentaDto c)  throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_ELIMINA_CUENTA);
         Objects.requireNonNull(c, "La cuenta a eliminar no puede ser nula");
         
         if (c == CuentaDto.NOT_FOUND)
@@ -245,7 +327,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public List<CuentaDto> listaCuentas() {
+    public List<CuentaDto> listaCuentas() throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_LISTA_CUENTAS);
         List<Cuenta> lista = Cuenta.findAll();
         List<CuentaDto> listaDto = new ArrayList();
         
@@ -257,7 +340,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public boolean ingresoEnCuenta(String concepto, float cantidad, CuentaDto destino) {
+    public boolean ingresoEnCuenta(String concepto, float cantidad, CuentaDto destino) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_INGRESO_EN_CUENTA);
         Objects.requireNonNull(concepto, "El concepto del ingreso no puede ser nulo");
         Objects.requireNonNull(destino, "La cuenta del ingreso no puede ser nula");
         
@@ -278,7 +362,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public boolean retiradaDeCuenta(String concepto, float cantidad, CuentaDto origen) {
+    public boolean retiradaDeCuenta(String concepto, float cantidad, CuentaDto origen) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_RETIRADA_DE_CUENTA);
         Objects.requireNonNull(concepto, "El concepto de la retirada no puede ser nulo");
         Objects.requireNonNull(origen, "La cuenta de la retirada no puede ser nula");
         
@@ -298,7 +383,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public boolean transferencia(String concepto, float cantidad, CuentaDto origen, CuentaDto destino) {
+    public boolean transferencia(String concepto, float cantidad, CuentaDto origen, CuentaDto destino) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_TRANSFERENCIA);
         Cuenta cueOrig = Cuenta.findByIdCuenta(origen.getIdCuenta());
         Cuenta cueDest = Cuenta.findByIdCuenta(destino.getIdCuenta());
         
@@ -318,7 +404,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public List<CuentaDto> buscaCuentaPorUsuario(UsuarioDto u) {
+    public List<CuentaDto> buscaCuentaPorUsuario(UsuarioDto u) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_CUENTA_POR_USUARIO);
         Objects.requireNonNull(u, "El usuario para el que se van a buscar sus cuentas no puede ser nulo");
         
         List<Cuenta> lista = Cuenta.findByIdUsuario(u.getIdUsuario());
@@ -331,7 +418,8 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public List<CuentaDto> buscaCuentaPorCliente(ClienteDto c) {
+    public List<CuentaDto> buscaCuentaPorCliente(ClienteDto c) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_CUENTA_POR_CLIENTE);
         Objects.requireNonNull(c, "El cliente para el que se van a buscar sus cuentas no puede ser nulo");
         
         List<Cuenta> lista = Cuenta.findByIdCliente(c.getIdCliente());
@@ -344,7 +432,9 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public CuentaDto buscaCuentaPorNumCuenta(int entidad, int sucursal, int dc, int numCuenta) {
+    public CuentaDto buscaCuentaPorNumCuenta(int entidad, int sucursal, int dc, int numCuenta) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_CUENTA_POR_NUM_CUENTA);
+        
         Cuenta c = Cuenta.findByNumCuenta(entidad, sucursal, dc, numCuenta);
         if (c == Cuenta.NOT_FOUND)
             return CuentaDto.NOT_FOUND;
@@ -353,12 +443,39 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
 
     @Override
-    public CuentaDto buscaCuentaPorIdCuenta(int idCuenta) {
+    public CuentaDto buscaCuentaPorIdCuenta(int idCuenta) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_CUENTA_POR_ID_CUENTA);
         Cuenta c = Cuenta.findByIdCuenta(idCuenta);
         if (c == Cuenta.NOT_FOUND)
             return CuentaDto.NOT_FOUND;
         else
             return new CuentaDto(c);
+    }
+    
+    private boolean isOperationAllowed (UsuarioDto usuDto, String nombreCortoOperacion) {
+        Objects.requireNonNull(usuDto, "El usuario a consultar sus permisos no puede ser nulo");
+        Objects.requireNonNull(nombreCortoOperacion, "El nombre de la operación no puede ser nulo");
+        
+        Usuario usu = Usuario.findByIdUsuario(usuDto.getIdUsuario());
+        
+        PerfilUsuario perfil = PerfilUsuario.findByIdPerfilUsuario(usu.getPerfilUsuarioIdPerfil());
+        for(Operacion oper: perfil.getOperPermitidas()) {
+            if(nombreCortoOperacion.equals(oper.getNombreCorto()))
+                return true;
+        }
+        return false;        
+    }
+
+    private void checkPermissions(String nombreOperacion) throws UserNotLoggedInException, OperationNotAllowedException {
+        Objects.requireNonNull(nombreOperacion, "El nombre de la operación no puede ser nulo");
+        
+        if (this.isLoggedUser == false)
+            throw new UserNotLoggedInException("El usuario debe estar logado para realizar esta operación");
+        else {
+            if (!isOperationAllowed(this.loggedUser, nombreOperacion))
+                throw new OperationNotAllowedException("El usuario "+this.loggedUser.getNombre()+" no tiene permisos para realizar la operación "+nombreOperacion);
+        }
+            
     }
     
 }

@@ -13,6 +13,9 @@ import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
 import com.bankito.presentacion.ClienteVista;
 import com.bankito.servicio.dto.ClienteDto;
+import com.bankito.servicio.exceptions.OperationNotAllowedException;
+import com.bankito.servicio.exceptions.ServicioException;
+import com.bankito.servicio.exceptions.UserNotLoggedInException;
 import java.util.List;
 
 /**
@@ -23,8 +26,8 @@ public class ClienteCont {
 
     private ServicioBancario sb;
 
-    public ClienteCont() {
-        sb = ServicioBancarioFactory.create();
+    public ClienteCont(ServicioBancario sb) {
+        this.sb = sb;
     }
 
     public void accionPrincipal() {
@@ -49,14 +52,23 @@ public class ClienteCont {
                     break;
 
             }
-            if (opc != ClienteVista.COD_SALIR)
+            if (opc != ClienteVista.COD_SALIR) {
                 accionPausar();
+            }
         } while (opc != ClienteVista.COD_SALIR);
     }
 
     private void accionListaClientes() {
-        List<ClienteDto> lista = sb.listaClientes();
-        ClienteVista.listaClientes(lista);
+        try {
+            List<ClienteDto> lista = sb.listaClientes();
+            ClienteVista.listaClientes(lista);
+        } catch (UserNotLoggedInException ex) {
+            ClienteVista.muestraMsgUsuarioNoLogado();
+        } catch (OperationNotAllowedException ex) {
+            ClienteVista.muestraMsgOperacionNoPermitida();
+        } catch (ServicioException ex) {
+            ClienteVista.muestraErrorSesionPermisos();
+        }
     }
 
     private void accionAltaCliente() {
@@ -67,7 +79,7 @@ public class ClienteCont {
         String direc = ClienteVista.solicitaDireccion();
         ClienteVista.muestraMsgDatosUsuario();
 
-        UsuarioCont usuCont = new UsuarioCont();
+        UsuarioCont usuCont = new UsuarioCont(sb);
         UsuarioDto usu = usuCont.accionAltaUsuario();
         try {
             sb.nuevoCliente(nombre, apellido1, apellido2, nif, direc, usu);
@@ -78,41 +90,64 @@ public class ClienteCont {
             ClienteVista.muestraMsgClienteNoValido();
         } catch (UsuarioNoValidoException e) {
             ClienteVista.muestraMsgUsuarioNoValido();
+        } catch (UserNotLoggedInException ex) {
+            ClienteVista.muestraMsgUsuarioNoLogado();
+        } catch (OperationNotAllowedException ex) {
+            ClienteVista.muestraMsgOperacionNoPermitida();
+        } catch (ServicioException ex) {
+            ClienteVista.muestraErrorSesionPermisos();
         }
     }
 
     ClienteDto accionBuscarPorNifCliente() {
-        String nif = ClienteVista.solicitaNif();
-        ClienteDto cli=  sb.buscaClientePorNif(nif);
-        if (cli == ClienteDto.NOT_FOUND) {
-            ClienteVista.muestraMsgClienteNoEncontrado();
-        } else {
-            ClienteVista.muestraDatosCliente(cli);
+        ClienteDto cli = ClienteDto.NOT_FOUND;
+        try {
+            String nif = ClienteVista.solicitaNif();
+            cli = sb.buscaClientePorNif(nif);
+            if (cli == ClienteDto.NOT_FOUND) {
+                ClienteVista.muestraMsgClienteNoEncontrado();
+            } else {
+                ClienteVista.muestraDatosCliente(cli);
+            } 
+        } catch (UserNotLoggedInException ex) {
+            ClienteVista.muestraMsgUsuarioNoLogado();
+        } catch (OperationNotAllowedException ex) {
+            ClienteVista.muestraMsgOperacionNoPermitida();
+        } catch (ServicioException ex) {
+            ClienteVista.muestraErrorSesionPermisos();
         }
         return cli;
     }
 
     private void accionBajaCliente() {
-        String nif = ClienteVista.solicitaNif();
-        ClienteDto cli = sb.buscaClientePorNif(nif);
-        if (cli == ClienteDto.NOT_FOUND) {
-            ClienteVista.muestraMsgUsuarioNoEncontrado();
-        } else {
-            boolean confirma = ClienteVista.confirmaBajaCliente();
-            if (confirma) {
-                boolean result = false;
-                try {
-                    result = sb.eliminaCliente(cli);
-                } catch (ClienteNoValidoException ex) {
-                    result = false;
+        try {
+            String nif = ClienteVista.solicitaNif();
+            ClienteDto cli = sb.buscaClientePorNif(nif);
+            if (cli == ClienteDto.NOT_FOUND) {
+                ClienteVista.muestraMsgUsuarioNoEncontrado();
+            } else {
+                boolean confirma = ClienteVista.confirmaBajaCliente();
+                if (confirma) {
+                    boolean result = false;
+                    try {
+                        result = sb.eliminaCliente(cli);
+                    } catch (ClienteNoValidoException ex) {
+                        result = false;
+                    }
+                    if (result) {
+                        ClienteVista.muestraMsgOperacionOK();
+                    } else {
+                        ClienteVista.muestraMsgOperacionError();
+                    }
                 }
-                if (result) {
-                    ClienteVista.muestraMsgOperacionOK();
-                } else {
-                    ClienteVista.muestraMsgOperacionError();
-                }
-            }
 
+            }
+        } catch (UserNotLoggedInException ex) {
+            ClienteVista.muestraMsgUsuarioNoLogado();
+        } catch (OperationNotAllowedException ex) {
+            ClienteVista.muestraMsgOperacionNoPermitida();
+        } catch (ServicioException ex) {
+            ClienteVista.muestraErrorSesionPermisos();
         }
     }
 

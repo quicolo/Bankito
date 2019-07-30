@@ -7,6 +7,7 @@ package com.bankito.aplicacion;
 
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.presentacion.MainVista;
+import com.bankito.servicio.ServicioBancarioFactory;
 
 /**
  *
@@ -17,6 +18,7 @@ public class MainCont {
     private ServicioBancario sb;
 
     public MainCont() {
+        this.sb = ServicioBancarioFactory.create();
     }
 
     public void accionPrincipal() {
@@ -41,17 +43,17 @@ public class MainCont {
     }
 
     private void accionMenuUsuario() {
-        UsuarioCont uc = new UsuarioCont();
+        UsuarioCont uc = new UsuarioCont(sb);
         uc.accionPrincipal();
     }
 
     private void accionMenuCliente() {
-        ClienteCont cc = new ClienteCont();
+        ClienteCont cc = new ClienteCont(sb);
         cc.accionPrincipal();
     }
 
     private void accionMenuCuenta() {
-        CuentaCont cc = new CuentaCont();
+        CuentaCont cc = new CuentaCont(sb);
         cc.accionPrincipal();
     }
 

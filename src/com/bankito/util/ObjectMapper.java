@@ -8,10 +8,16 @@ package com.bankito.util;
 import com.bankito.dominio.Cliente;
 import com.bankito.dominio.Cuenta;
 import com.bankito.dominio.Movimiento;
+import com.bankito.dominio.Operacion;
+import com.bankito.dominio.PerfilUsuario;
+import com.bankito.dominio.Sesion;
 import com.bankito.dominio.Usuario;
 import com.bankito.persistencia.dto.ClienteEntidad;
 import com.bankito.persistencia.dto.CuentaEntidad;
 import com.bankito.persistencia.dto.MovimientoEntidad;
+import com.bankito.persistencia.dto.OperacionEntidad;
+import com.bankito.persistencia.dto.PerfilUsuarioEntidad;
+import com.bankito.persistencia.dto.SesionEntidad;
 import com.bankito.persistencia.dto.UsuarioEntidad;
 import com.bankito.persistencia.exceptions.MovimientoEntidadDaoException;
 import java.util.List;
@@ -81,6 +87,7 @@ public class ObjectMapper {
         dest.setPassword(orig.getPassword());
         dest.setFechaCreacion(orig.getFechaCreacion());
         dest.setFechaModificacion(orig.getFechaModificacion());
+        dest.setPerfilUsuarioIdPerfil(orig.getPerfilUsuarioIdPerfil());
     }
     
     public static void copyProperties(UsuarioEntidad orig, Usuario dest) {
@@ -89,6 +96,7 @@ public class ObjectMapper {
         dest.setPasswordNoEncoding(orig.getPassword());
         dest.setFechaCreacion(orig.getFechaCreacion());
         dest.setFechaModificacion(orig.getFechaModificacion());
+        dest.setPerfilUsuarioIdPerfil(orig.getPerfilUsuarioIdPerfil());
     }
     
     public static void copyProperties(UsuarioEntidad[] orig, List<Usuario> dest) {
@@ -168,4 +176,65 @@ public class ObjectMapper {
             dest.add(mov);
         }
     }
+
+    public static void copyProperties(PerfilUsuarioEntidad orig, PerfilUsuario dest) {
+        dest.setIdPerfilUsuario(orig.getIdPerfilUsuario());
+        dest.setNombre(orig.getNombre());
+        dest.setDescripcion(orig.getDescripcion());
+        dest.setOperPermitidas(PerfilUsuario.findOperacionesPermitidas(dest));
+
+    }
+
+    public static void copyProperties(PerfilUsuario orig, PerfilUsuarioEntidad dest) {
+        dest.setIdPerfilUsuario(orig.getIdPerfilUsuario());
+        dest.setNombre(orig.getNombre());
+        dest.setDescripcion(orig.getDescripcion());
+    }
+
+    public static void copyProperties(PerfilUsuarioEntidad[] orig, List<PerfilUsuario> dest) {
+        dest.clear();
+        for(int i=0; i<orig.length; i++) {
+            PerfilUsuario perfil = new PerfilUsuario();
+            copyProperties(orig[i],perfil);
+            dest.add(perfil);
+        }
+    }
+
+    public static void copyProperties(Operacion orig, OperacionEntidad dest) {
+        dest.setIdOperacion(orig.getIdOperacion());
+        dest.setNombre(orig.getNombre());
+        dest.setNombreCorto(orig.getNombreCorto());
+        dest.setDescripcion(orig.getDescripcion());
+    }
+
+    public static void copyProperties(OperacionEntidad orig, Operacion dest) {
+        dest.setIdOperacion(orig.getIdOperacion());
+        dest.setNombre(orig.getNombre());
+        dest.setNombreCorto(orig.getNombreCorto());
+        dest.setDescripcion(orig.getDescripcion());
+    }
+
+    public static void copyProperties(OperacionEntidad[] orig, List<Operacion> dest) {
+        dest.clear();
+        for(int i=0; i<orig.length; i++) {
+            Operacion perfil = new Operacion();
+            copyProperties(orig[i],perfil);
+            dest.add(perfil);
+        }
+    }
+
+    public static void copyProperties(Sesion orig, SesionEntidad dest) {
+        dest.setIdSesion(orig.getIdSesion());
+        dest.setAccion(orig.getAccion());
+        dest.setUsuarioIdUsuario(orig.getUsuarioIdUsuario());
+        dest.setFechaCreacion(orig.getFechaCreacion());
+    }
+
+    public static void copyProperties(SesionEntidad orig, Sesion dest) {
+        dest.setIdSesion(orig.getIdSesion());
+        dest.setAccion(orig.getAccion());
+        dest.setUsuarioIdUsuario(orig.getUsuarioIdUsuario());
+        dest.setFechaCreacion(orig.getFechaCreacion());
+    }
+
 }

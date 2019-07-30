@@ -8,7 +8,6 @@
 
 package com.bankito.persistencia.dto;
 
-import com.bankito.dominio.Usuario;
 import com.bankito.persistencia.dao.*;
 import com.bankito.persistencia.factory.*;
 import com.bankito.persistencia.exceptions.*;
@@ -24,9 +23,19 @@ public class UsuarioEntidad implements Serializable
 	protected int idUsuario;
 
 	/** 
+	 * This attribute represents whether the attribute idUsuario has been modified since being read from the database.
+	 */
+	protected boolean idUsuarioModified = false;
+
+	/** 
 	 * This attribute maps to the column nombre in the usuario table.
 	 */
 	protected String nombre;
+
+	/** 
+	 * This attribute represents whether the attribute nombre has been modified since being read from the database.
+	 */
+	protected boolean nombreModified = false;
 
 	/** 
 	 * This attribute maps to the column password in the usuario table.
@@ -34,14 +43,44 @@ public class UsuarioEntidad implements Serializable
 	protected String password;
 
 	/** 
+	 * This attribute represents whether the attribute password has been modified since being read from the database.
+	 */
+	protected boolean passwordModified = false;
+
+	/** 
 	 * This attribute maps to the column fecha_creacion in the usuario table.
 	 */
 	protected Date fechaCreacion;
 
 	/** 
+	 * This attribute represents whether the attribute fechaCreacion has been modified since being read from the database.
+	 */
+	protected boolean fechaCreacionModified = false;
+
+	/** 
 	 * This attribute maps to the column fecha_modificacion in the usuario table.
 	 */
 	protected Date fechaModificacion;
+
+	/** 
+	 * This attribute represents whether the attribute fechaModificacion has been modified since being read from the database.
+	 */
+	protected boolean fechaModificacionModified = false;
+
+	/** 
+	 * This attribute maps to the column perfil_usuario_id_perfil in the usuario table.
+	 */
+	protected int perfilUsuarioIdPerfil;
+
+	/** 
+	 * This attribute represents whether the primitive attribute perfilUsuarioIdPerfil is null.
+	 */
+	protected boolean perfilUsuarioIdPerfilNull = true;
+
+	/** 
+	 * This attribute represents whether the attribute perfilUsuarioIdPerfil has been modified since being read from the database.
+	 */
+	protected boolean perfilUsuarioIdPerfilModified = false;
 
 	/**
 	 * Method 'UsuarioEntidad'
@@ -69,6 +108,23 @@ public class UsuarioEntidad implements Serializable
 	public void setIdUsuario(int idUsuario)
 	{
 		this.idUsuario = idUsuario;
+		this.idUsuarioModified = true;
+	}
+
+	/** 
+	 * Sets the value of idUsuarioModified
+	 */
+	public void setIdUsuarioModified(boolean idUsuarioModified)
+	{
+		this.idUsuarioModified = idUsuarioModified;
+	}
+
+	/** 
+	 * Gets the value of idUsuarioModified
+	 */
+	public boolean isIdUsuarioModified()
+	{
+		return idUsuarioModified;
 	}
 
 	/**
@@ -89,6 +145,23 @@ public class UsuarioEntidad implements Serializable
 	public void setNombre(String nombre)
 	{
 		this.nombre = nombre;
+		this.nombreModified = true;
+	}
+
+	/** 
+	 * Sets the value of nombreModified
+	 */
+	public void setNombreModified(boolean nombreModified)
+	{
+		this.nombreModified = nombreModified;
+	}
+
+	/** 
+	 * Gets the value of nombreModified
+	 */
+	public boolean isNombreModified()
+	{
+		return nombreModified;
 	}
 
 	/**
@@ -109,6 +182,23 @@ public class UsuarioEntidad implements Serializable
 	public void setPassword(String password)
 	{
 		this.password = password;
+		this.passwordModified = true;
+	}
+
+	/** 
+	 * Sets the value of passwordModified
+	 */
+	public void setPasswordModified(boolean passwordModified)
+	{
+		this.passwordModified = passwordModified;
+	}
+
+	/** 
+	 * Gets the value of passwordModified
+	 */
+	public boolean isPasswordModified()
+	{
+		return passwordModified;
 	}
 
 	/**
@@ -129,6 +219,23 @@ public class UsuarioEntidad implements Serializable
 	public void setFechaCreacion(Date fechaCreacion)
 	{
 		this.fechaCreacion = fechaCreacion;
+		this.fechaCreacionModified = true;
+	}
+
+	/** 
+	 * Sets the value of fechaCreacionModified
+	 */
+	public void setFechaCreacionModified(boolean fechaCreacionModified)
+	{
+		this.fechaCreacionModified = fechaCreacionModified;
+	}
+
+	/** 
+	 * Gets the value of fechaCreacionModified
+	 */
+	public boolean isFechaCreacionModified()
+	{
+		return fechaCreacionModified;
 	}
 
 	/**
@@ -149,9 +256,84 @@ public class UsuarioEntidad implements Serializable
 	public void setFechaModificacion(Date fechaModificacion)
 	{
 		this.fechaModificacion = fechaModificacion;
+		this.fechaModificacionModified = true;
 	}
 
-        
+	/** 
+	 * Sets the value of fechaModificacionModified
+	 */
+	public void setFechaModificacionModified(boolean fechaModificacionModified)
+	{
+		this.fechaModificacionModified = fechaModificacionModified;
+	}
+
+	/** 
+	 * Gets the value of fechaModificacionModified
+	 */
+	public boolean isFechaModificacionModified()
+	{
+		return fechaModificacionModified;
+	}
+
+	/**
+	 * Method 'getPerfilUsuarioIdPerfil'
+	 * 
+	 * @return int
+	 */
+	public int getPerfilUsuarioIdPerfil()
+	{
+		return perfilUsuarioIdPerfil;
+	}
+
+	/**
+	 * Method 'setPerfilUsuarioIdPerfil'
+	 * 
+	 * @param perfilUsuarioIdPerfil
+	 */
+	public void setPerfilUsuarioIdPerfil(int perfilUsuarioIdPerfil)
+	{
+		this.perfilUsuarioIdPerfil = perfilUsuarioIdPerfil;
+		this.perfilUsuarioIdPerfilNull = false;
+		this.perfilUsuarioIdPerfilModified = true;
+	}
+
+	/**
+	 * Method 'setPerfilUsuarioIdPerfilNull'
+	 * 
+	 * @param value
+	 */
+	public void setPerfilUsuarioIdPerfilNull(boolean value)
+	{
+		this.perfilUsuarioIdPerfilNull = value;
+		this.perfilUsuarioIdPerfilModified = true;
+	}
+
+	/**
+	 * Method 'isPerfilUsuarioIdPerfilNull'
+	 * 
+	 * @return boolean
+	 */
+	public boolean isPerfilUsuarioIdPerfilNull()
+	{
+		return perfilUsuarioIdPerfilNull;
+	}
+
+	/** 
+	 * Sets the value of perfilUsuarioIdPerfilModified
+	 */
+	public void setPerfilUsuarioIdPerfilModified(boolean perfilUsuarioIdPerfilModified)
+	{
+		this.perfilUsuarioIdPerfilModified = perfilUsuarioIdPerfilModified;
+	}
+
+	/** 
+	 * Gets the value of perfilUsuarioIdPerfilModified
+	 */
+	public boolean isPerfilUsuarioIdPerfilModified()
+	{
+		return perfilUsuarioIdPerfilModified;
+	}
+
 	/**
 	 * Method 'equals'
 	 * 
@@ -177,7 +359,15 @@ public class UsuarioEntidad implements Serializable
 			return false;
 		}
 		
+		if (idUsuarioModified != _cast.idUsuarioModified) {
+			return false;
+		}
+		
 		if (nombre == null ? _cast.nombre != nombre : !nombre.equals( _cast.nombre )) {
+			return false;
+		}
+		
+		if (nombreModified != _cast.nombreModified) {
 			return false;
 		}
 		
@@ -185,11 +375,35 @@ public class UsuarioEntidad implements Serializable
 			return false;
 		}
 		
+		if (passwordModified != _cast.passwordModified) {
+			return false;
+		}
+		
 		if (fechaCreacion == null ? _cast.fechaCreacion != fechaCreacion : !fechaCreacion.equals( _cast.fechaCreacion )) {
 			return false;
 		}
 		
+		if (fechaCreacionModified != _cast.fechaCreacionModified) {
+			return false;
+		}
+		
 		if (fechaModificacion == null ? _cast.fechaModificacion != fechaModificacion : !fechaModificacion.equals( _cast.fechaModificacion )) {
+			return false;
+		}
+		
+		if (fechaModificacionModified != _cast.fechaModificacionModified) {
+			return false;
+		}
+		
+		if (perfilUsuarioIdPerfil != _cast.perfilUsuarioIdPerfil) {
+			return false;
+		}
+		
+		if (perfilUsuarioIdPerfilNull != _cast.perfilUsuarioIdPerfilNull) {
+			return false;
+		}
+		
+		if (perfilUsuarioIdPerfilModified != _cast.perfilUsuarioIdPerfilModified) {
 			return false;
 		}
 		
@@ -205,22 +419,30 @@ public class UsuarioEntidad implements Serializable
 	{
 		int _hashCode = 0;
 		_hashCode = 29 * _hashCode + idUsuario;
+		_hashCode = 29 * _hashCode + (idUsuarioModified ? 1 : 0);
 		if (nombre != null) {
 			_hashCode = 29 * _hashCode + nombre.hashCode();
 		}
 		
+		_hashCode = 29 * _hashCode + (nombreModified ? 1 : 0);
 		if (password != null) {
 			_hashCode = 29 * _hashCode + password.hashCode();
 		}
 		
+		_hashCode = 29 * _hashCode + (passwordModified ? 1 : 0);
 		if (fechaCreacion != null) {
 			_hashCode = 29 * _hashCode + fechaCreacion.hashCode();
 		}
 		
+		_hashCode = 29 * _hashCode + (fechaCreacionModified ? 1 : 0);
 		if (fechaModificacion != null) {
 			_hashCode = 29 * _hashCode + fechaModificacion.hashCode();
 		}
 		
+		_hashCode = 29 * _hashCode + (fechaModificacionModified ? 1 : 0);
+		_hashCode = 29 * _hashCode + perfilUsuarioIdPerfil;
+		_hashCode = 29 * _hashCode + (perfilUsuarioIdPerfilNull ? 1 : 0);
+		_hashCode = 29 * _hashCode + (perfilUsuarioIdPerfilModified ? 1 : 0);
 		return _hashCode;
 	}
 
@@ -248,6 +470,7 @@ public class UsuarioEntidad implements Serializable
 		ret.append( ", password=" + password );
 		ret.append( ", fechaCreacion=" + fechaCreacion );
 		ret.append( ", fechaModificacion=" + fechaModificacion );
+		ret.append( ", perfilUsuarioIdPerfil=" + perfilUsuarioIdPerfil );
 		return ret.toString();
 	}
 
