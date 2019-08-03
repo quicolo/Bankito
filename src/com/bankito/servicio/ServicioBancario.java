@@ -40,6 +40,7 @@ public interface ServicioBancario {
     public static final String OPER_LISTA_CLIENTES = "LISTA_CLIENTES";
     public static final String OPER_BUSCA_CLIENTE_POR_NIF = "BUSCA_CLIENTE_POR_NIF";
     public static final String OPER_BUSCA_CLIENTE_POR_ID = "BUSCA_CLIENTE_POR_ID";
+    public static final String OPER_BUSCA_CLIENTE_POR_ID_USUARIO = "BUSCA_CLIENTE_POR_ID_USUARIO";
     
     public static final String OPER_NUEVA_CUENTA = "NUEVA_CUENTA";
     public static final String OPER_ELIMINA_CUENTA = "ELIMINA_CUENTA";
@@ -58,6 +59,10 @@ public interface ServicioBancario {
     public UsuarioDto loginUsuario(String nombre, String password) throws UsuarioEncodePasswordException, DominioException, ServicioException;
     // Logout usuario
     public boolean logoutUsuario() throws DominioException, ServicioException;
+    // Devuelve si hay usuario logado
+    public boolean hayUsuarioLogado(); 
+    // Devuelve el usuario logado
+    public UsuarioDto getUsuarioLogado();
     // Elimina usuario
     public boolean eliminaUsuario(UsuarioDto usu) throws UsuarioNoValidoException, ServicioException;
     // Listar todos los usuarios
@@ -83,9 +88,10 @@ public interface ServicioBancario {
     public boolean eliminaCliente(ClienteDto cli) throws ClienteNoValidoException, ServicioException;
     // Listar todos los clientes
     public List<ClienteDto> listaClientes() throws ServicioException;
-    // Buscar cliente por NIF, idcliente
+    // Buscar cliente por NIF, idcliente, por idUsuario
     public ClienteDto buscaClientePorNif(String nif) throws ServicioException;
     public ClienteDto buscaClientePorId(int idCliente) throws ServicioException;
+    public ClienteDto buscaClientePorIdUsuario(int idUsuario) throws ServicioException;
 
     // Nueva cuenta
     public CuentaDto nuevaCuenta(UsuarioDto usuDto) throws CuentaNoValidaException, ServicioException;

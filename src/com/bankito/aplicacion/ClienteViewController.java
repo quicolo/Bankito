@@ -8,19 +8,18 @@ package com.bankito.aplicacion;
 import com.bankito.Main;
 import com.bankito.dominio.exceptions.DominioException;
 import com.bankito.servicio.ServicioBancario;
+import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.UsuarioDto;
 import com.bankito.servicio.exceptions.ServicioException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -30,9 +29,12 @@ import javafx.scene.control.TextField;
 public class ClienteViewController implements Initializable {
     
     private Main mainApp;
+    private ServicioBancario sb;
 
     @FXML
-    private Button cerrarSesionBtn;
+    private ImageView cerrarSesionBtn;
+    @FXML
+    private Label bienvenidoLbl;
 
 
     /**
@@ -40,10 +42,16 @@ public class ClienteViewController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
     }    
     
+    public void initializeWithMainLoaded() {
+        
+        cargaSaludoBienvenida();
+    }
+    
     @FXML
-    public void accionLogout(ActionEvent event) {
+    public void accionLogout(javafx.event.Event event) {
         try {
             ServicioBancario sb = mainApp.getServicioBancario();
             
@@ -64,4 +72,20 @@ public class ClienteViewController implements Initializable {
     public void setMainApp(Main aplicacion) {
         this.mainApp = aplicacion;
     }
+
+    private void cargaSaludoBienvenida() {
+        String nombre = "";
+        try {
+            sb = mainApp.getServicioBancario();
+            UsuarioDto user = sb.getUsuarioLogado();
+            ClienteDto cli = sb.buscaClientePorIdUsuario(user.getIdUsuario());
+            if (cli != ClienteDto.NOT_FOUND)
+                nombre = " "+cli.getNombre();
+        } catch (ServicioException ex) {
+            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        bienvenidoLbl.setText("Hola"+nombre+", bienvenid@ a Bankito");
+    }
+
+    
 }

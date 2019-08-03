@@ -48,10 +48,11 @@ public class Main extends Application {
         this.stage = primaryStage;
         servicioBancario = ServicioBancarioFactory.create();
         
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("presentacion/images/Bankito Logo app.png")));
-        primaryStage.setTitle("Bankito");
+        stage.getIcons().add(new Image(Main.class.getResourceAsStream("presentacion/images/Bankito Logo app.png")));
+        stage.setTitle("Bankito");
         goToLogin();
-        primaryStage.show();
+        stage.show();
+        stage.centerOnScreen();
     }
 
     
@@ -70,6 +71,7 @@ public class Main extends Application {
         try {
             ClienteViewController login = (ClienteViewController) replaceSceneContent("presentacion/ClienteView.fxml");
             login.setMainApp(this);
+            login.initializeWithMainLoaded();
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -88,6 +90,7 @@ public class Main extends Application {
         } 
         Scene scene = new Scene(page);
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.sizeToScene();
         return (Initializable) loader.getController();
     }

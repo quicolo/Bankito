@@ -93,6 +93,16 @@ class ServicioBancarioImpl implements ServicioBancario {
     }
     
     @Override
+    public boolean hayUsuarioLogado() {
+        return isLoggedUser;
+    }
+    
+    @Override
+    public UsuarioDto getUsuarioLogado() {
+        return loggedUser;
+    }
+    
+    @Override
     public boolean eliminaUsuario(UsuarioDto usu) throws UsuarioNoValidoException, ServicioException {
         checkPermissions(ServicioBancario.OPER_ELIMINA_USUARIO);
         Usuario u = Usuario.findByIdUsuario(usu.getIdUsuario());
@@ -259,6 +269,16 @@ class ServicioBancarioImpl implements ServicioBancario {
     public ClienteDto buscaClientePorId(int idCliente) throws ServicioException {
         checkPermissions(ServicioBancario.OPER_BUSCA_CLIENTE_POR_ID);
         Cliente cli = Cliente.findByIdCliente(idCliente);
+        if (cli == Cliente.NOT_FOUND) 
+            return ClienteDto.NOT_FOUND;
+        else
+            return new ClienteDto(cli);
+    }
+    
+    @Override
+    public ClienteDto buscaClientePorIdUsuario(int idUsuario) throws ServicioException {
+        checkPermissions(ServicioBancario.OPER_BUSCA_CLIENTE_POR_ID_USUARIO);
+        Cliente cli = Cliente.findByIdUsuario(idUsuario);
         if (cli == Cliente.NOT_FOUND) 
             return ClienteDto.NOT_FOUND;
         else
