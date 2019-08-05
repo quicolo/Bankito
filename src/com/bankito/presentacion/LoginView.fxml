@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="779.0" stylesheets="@css/bootstrap2.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankito.aplicacion.LoginViewController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="389.0" prefWidth="779.0" style="-fx-background-color: white;" stylesheets="@css/bootstrap2.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bankito.aplicacion.LoginViewController">
    <children>
       <ImageView fitHeight="253.0" fitWidth="324.0" layoutX="14.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -45,6 +45,6 @@
       </Label>
       <TextField fx:id="usuarioTxt" layoutX="458.0" layoutY="91.0" prefHeight="31.0" prefWidth="239.0" promptText="Usuario" />
       <PasswordField fx:id="passwordTxt" layoutX="458.0" layoutY="179.0" onAction="#onPasswordEnter" prefHeight="31.0" prefWidth="239.0" promptText="Password" />
-      <Button fx:id="entrarBtn" layoutX="492.0" layoutY="300.0" mnemonicParsing="false" onAction="#accionLogin" prefHeight="55.0" prefWidth="172.0" styleClass="primary" text="Iniciar sesión" textAlignment="CENTER" />
+      <Button fx:id="entrarBtn" defaultButton="true" layoutX="492.0" layoutY="300.0" mnemonicParsing="false" onAction="#accionLogin" prefHeight="55.0" prefWidth="172.0" styleClass="primary" text="Iniciar sesión" textAlignment="CENTER" />
    </children>
 </AnchorPane>
