@@ -7,7 +7,9 @@ package com.bankito;
 
 import com.bankito.aplicacion.ClienteViewController;
 import com.bankito.aplicacion.DatosClienteDialogViewController;
+import com.bankito.aplicacion.IngresarDialogViewController;
 import com.bankito.aplicacion.LoginViewController;
+import com.bankito.presentacion.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.ServicioBancarioFactory;
@@ -70,9 +72,9 @@ public class Main extends Application {
 
     public void goToClienteView() {
         try {
-            ClienteViewController login = (ClienteViewController) replaceSceneContent(ResourcePath.CLIENTE_VIEW);
-            login.setMainApp(this);
-            login.initializeAfterSettingMain();
+            ClienteViewController controller =  (ClienteViewController) replaceSceneContent(ResourcePath.CLIENTE_VIEW);
+            controller.setMainApp(this);
+            controller.initializeAfterSettingMain(); 
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -94,6 +96,23 @@ public class Main extends Application {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    public void goToDialogoIngresar(CuentaModelo cuenta) {
+        try {
+            Stage dialog = getNewDialogStage("Ingresar en tu cuenta corriente");
+            IngresarDialogViewController controller = 
+                    (IngresarDialogViewController) openNewDialogScene(ResourcePath.INGRESAR_DIALOG_VIEW, dialog);
+            
+            controller.setDialogStage(dialog);
+            controller.setMainApp(this);
+            controller.setModel(cuenta);
+            controller.initializeAfterSettingMain();
+            // Show the dialog and wait until the user closes it
+            dialog.showAndWait();
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private Stage getNewDialogStage(String tituloDialogo) {
@@ -149,5 +168,7 @@ public class Main extends Application {
     public void setServicioBancario(ServicioBancario servicio) {
         this.servicioBancario = servicio;
     }
+
+
 
 }

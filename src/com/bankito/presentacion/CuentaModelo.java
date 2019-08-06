@@ -8,6 +8,7 @@ package com.bankito.presentacion;
 import com.bankito.dominio.Movimiento;
 import com.bankito.servicio.dto.CuentaDto;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
@@ -26,7 +27,7 @@ import javafx.collections.ObservableList;
  *
  * @author Kike
  */
-public final class CuentaDtoModel {
+public final class CuentaModelo {
 
     private IntegerProperty idCuenta;
     private IntegerProperty numEntidad;
@@ -38,8 +39,11 @@ public final class CuentaDtoModel {
     private ObservableList<Movimiento> listaMov;
     private StringProperty numCuentaConFormato;
     private IntegerProperty numMovimientos;
+    private FloatProperty ingresosTotal, gastosTotal;
+    
+    private SituacionGlobalModelo global = null;
 
-    public CuentaDtoModel() {
+    public CuentaModelo() {
         idCuenta = new SimpleIntegerProperty();
         numEntidad = new SimpleIntegerProperty();
         numSucursal = new SimpleIntegerProperty();
@@ -50,9 +54,11 @@ public final class CuentaDtoModel {
         listaMov = FXCollections.observableArrayList();
         numCuentaConFormato = new SimpleStringProperty();
         numMovimientos = new SimpleIntegerProperty();
+        ingresosTotal = new SimpleFloatProperty();
+        gastosTotal = new SimpleFloatProperty();
     }
 
-    public CuentaDtoModel(CuentaDto dto) {
+    public CuentaModelo(CuentaDto dto) {
         this();
         this.setIdCuenta(dto.getIdCuenta());
         this.setNumEntidad(dto.getNumEntidad());
@@ -64,7 +70,36 @@ public final class CuentaDtoModel {
         this.setListaMov(dto.getListaMov());
         this.numCuentaConFormato.set(String.format("%04d %04d %02d %010d",
                 dto.getNumEntidad(), dto.getNumSucursal(), dto.getNumDigitoControl(), dto.getNumCuenta()));
-        this.numMovimientos.set(dto.getListaMov().size());
+        recalcula();
+    }
+    
+    public void recalcula() {
+        //System.out.println("Llamada a cuentaModelo recalcula");
+        this.numMovimientos.set(listaMov.size());
+        
+        float ingresos = 0;
+        float gastos = 0;
+        Iterator<Movimiento> itera = listaMov.iterator();
+        while(itera.hasNext()) {
+            Movimiento m = itera.next();
+            if(m.getTipo() == Movimiento.TIPO_MOV_ENTRADA)
+                ingresos = ingresos + m.getImporte();
+            else
+                gastos = gastos + m.getImporte();
+        }
+        
+        this.ingresosTotal.set(ingresos);
+        this.gastosTotal.set(gastos);
+        
+        if(global != null) {
+            //System.out.println("Llamada a global recalcula");
+            global.recalcula();
+        }
+        
+    }
+    
+    public void setSituacionGlobalModelo(SituacionGlobalModelo situacion) {
+        this.global = situacion;
     }
 
     public int getIdCuenta() {
@@ -125,6 +160,7 @@ public final class CuentaDtoModel {
 
     public void setListaMov(List<Movimiento> listaMov) {
         this.listaMov.setAll(listaMov);
+        this.numMovimientos.set(listaMov.size());
     }
 
     public String getNumCuentaConFormato() {
@@ -134,7 +170,16 @@ public final class CuentaDtoModel {
     public int getNumMovimientos() {
         return this.numMovimientos.get();
     }
-   
+    
+    public float getIngresosTotal() {
+        return this.ingresosTotal.get();
+    }
+
+    public float getGastosTotal() {
+        return this.gastosTotal.get();
+    }
+    
+    
     
     public StringProperty getNumCuentaConFormatoProperty() {
         return this.numCuentaConFormato;
@@ -207,4 +252,13 @@ public final class CuentaDtoModel {
     public IntegerProperty getNumMovimientosProperty() {
         return this.numMovimientos;
     }
+
+    public FloatProperty getIngresosTotalProperty() {
+        return this.ingresosTotal;
+    }
+
+    public FloatProperty getGastosTotalProperty() {
+        return this.gastosTotal;
+    }
+    
 }

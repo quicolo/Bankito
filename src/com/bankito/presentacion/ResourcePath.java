@@ -18,6 +18,7 @@ public class ResourcePath {
     public static String LOGIN_VIEW = "presentacion/LoginView.fxml";
     public static String CLIENTE_VIEW = "presentacion/ClienteView.fxml";
     public static String DATOS_CLIENTE_DIALOG_VIEW = "presentacion/DatosClienteDialogView.fxml";
+    public static String INGRESAR_DIALOG_VIEW = "presentacion/IngresarDialogView.fxml";
     
     private ResourcePath(){}
     

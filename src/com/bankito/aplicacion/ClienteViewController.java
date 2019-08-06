@@ -7,8 +7,9 @@ package com.bankito.aplicacion;
 
 import com.bankito.Main;
 import com.bankito.dominio.exceptions.DominioException;
-import com.bankito.presentacion.CuentaDtoModel;
+import com.bankito.presentacion.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
+import com.bankito.presentacion.SituacionGlobalModelo;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
@@ -45,7 +46,8 @@ public class ClienteViewController implements Initializable {
 
     private Main mainApp;
     private ServicioBancario sb;
-    private ObservableList<CuentaDtoModel> listaCuentas;
+    private ObservableList<CuentaModelo> listaCuentas;
+    private SituacionGlobalModelo modeloGlobal;
 
     @FXML
     private ImageView abacoImg, cerdoImg, usuarioImg;
@@ -55,20 +57,20 @@ public class ClienteViewController implements Initializable {
     private Button userBtn, cerrarSesionBtn;
     
     @FXML
-    private TableView<CuentaDtoModel> cuentaTable;
+    private TableView<CuentaModelo> cuentaTable;
     @FXML
-    private TableColumn<CuentaDtoModel, String> numeroCuentaColumn;
+    private TableColumn<CuentaModelo, String> numeroCuentaColumn;
     @FXML
-    private TableColumn<CuentaDtoModel, Number> saldoColumn;
+    private TableColumn<CuentaModelo, Number> saldoColumn;
     @FXML
-    private TableColumn<CuentaDtoModel, Number> numMovimientosColumn;
+    private TableColumn<CuentaModelo, Number> numMovimientosColumn;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        listaCuentas = FXCollections.observableArrayList();
+        modeloGlobal = new SituacionGlobalModelo(this);
         
         numeroCuentaColumn.setCellValueFactory(cellData -> cellData.getValue().getNumCuentaConFormatoProperty());
         numeroCuentaColumn.setStyle( "-fx-alignment: CENTER;");
@@ -79,15 +81,15 @@ public class ClienteViewController implements Initializable {
         numMovimientosColumn.setCellValueFactory(cellData -> cellData.getValue().getNumMovimientosProperty());
         numMovimientosColumn.setStyle( "-fx-alignment: CENTER;");
 
-        cuentaTable.setItems(listaCuentas);
+        cuentaTable.setItems(modeloGlobal.getListaCuentasProperty());
     }
 
     public void initializeAfterSettingMain() {
         sb = mainApp.getServicioBancario();
         cargaSaludoBienvenida();
         cargaBotonesBarraSuperior();
-        cargaSituacionGlobal();
-        cargaTablaCuentas();
+        cargaSituacionGlobalModelo();
+        showSituacionGlobal();
     }
 
     @FXML
@@ -110,9 +112,9 @@ public class ClienteViewController implements Initializable {
 
     @FXML
     public void accionIngresar(ActionEvent event) { 
-        CuentaDtoModel cuenta = cuentaTable.getSelectionModel().getSelectedItem();
+        CuentaModelo cuenta = cuentaTable.getSelectionModel().getSelectedItem();
         if (cuenta != null) {
-            System.out.println(cuenta.toString());
+            mainApp.goToDialogoIngresar(cuenta);
         }
         else 
             alertaCuentaSinSeleccionar();
@@ -174,37 +176,11 @@ public class ClienteViewController implements Initializable {
         bienvenidoLbl.setText("Hola" + nombre + ", bienvenid@ a Bankito");
     }
 
-    private void cargaSituacionGlobal() {
-        try {
-            UsuarioDto usu = sb.getUsuarioLogado();
-            List<CuentaDto> listaCue = sb.buscaCuentaPorUsuario(usu);
-            int numCuentas = listaCue.size();
-            float saldoTotal = 0.0f;
-            for (CuentaDto c : listaCue) {
-                saldoTotal = saldoTotal + c.getSaldo();
-            }
-
-            numCuentasLbl.setText("Tienes " + numCuentas + " cuentas abiertas en Bankito");
-            saldoTotalLbl.setText("Con un saldo total de " + saldoTotal + " €");
-
-        } catch (ServicioException ex) {
-            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public void showSituacionGlobal() {
+        numCuentasLbl.setText("Tienes " + modeloGlobal.getNumeroCuentas() + " cuentas abiertas en Bankito");
+        saldoTotalLbl.setText("Con un saldo total de " + modeloGlobal.getSaldoTotal() + " €");
     }
 
-    private void cargaTablaCuentas() {
-        try {
-            UsuarioDto loggedUser = sb.getUsuarioLogado();
-            List<CuentaDto> listaDto = sb.buscaCuentaPorUsuario(loggedUser);
-            
-            for(CuentaDto c : listaDto) {
-                listaCuentas.add(new CuentaDtoModel(c));
-            }
-                        
-        } catch (ServicioException ex) {
-            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
     private void cargaBotonesBarraSuperior() {
         Image imagen = new Image(Main.class.getResourceAsStream(ResourcePath.USER_BUTTON_ICON));
@@ -216,6 +192,23 @@ public class ClienteViewController implements Initializable {
         cerrarSesionBtn.setGraphic(new ImageView(imagen));
         tip = new Tooltip("Cerrar sesión");
         cerrarSesionBtn.setTooltip(tip);
+    }
+
+    private void cargaSituacionGlobalModelo() {
+        try {
+            UsuarioDto loggedUser = sb.getUsuarioLogado();
+            List<CuentaDto> listaDto = sb.buscaCuentaPorUsuario(loggedUser);
+            
+            for(CuentaDto c : listaDto) {
+                CuentaModelo cm = new CuentaModelo(c);
+                cm.setSituacionGlobalModelo(modeloGlobal);
+                modeloGlobal.getListaCuentasProperty().add(cm);
+            }
+            modeloGlobal.recalcula();
+                        
+        } catch (ServicioException ex) {
+            Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
