@@ -155,7 +155,7 @@
                                     <HBox layoutX="247.0" layoutY="334.0" spacing="40.0">
                                        <children>
                                           <Button fx:id="ingresarBtn" layoutX="148.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionIngresar" styleClass="primary" stylesheets="@css/bootstrap2.css" text="Ingresar" />
-                                          <Button fx:id="retirarBtn" layoutX="258.0" layoutY="319.0" mnemonicParsing="false" styleClass="success" stylesheets="@css/bootstrap2.css" text="Retirar" />
+                                          <Button fx:id="retirarBtn" layoutX="258.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionRetirar" styleClass="success" stylesheets="@css/bootstrap2.css" text="Retirar" />
                                           <Button fx:id="transferirBtn" layoutX="369.0" layoutY="319.0" mnemonicParsing="false" styleClass="danger" stylesheets="@css/bootstrap2.css" text="Transferir" />
                                           <Button fx:id="verMovimBtn" layoutX="492.0" layoutY="319.0" mnemonicParsing="false" styleClass="info" stylesheets="@css/bootstrap2.css" text="Ver movimientos" />
                                           <Button fx:id="verCuentaBtn" layoutX="684.0" layoutY="319.0" mnemonicParsing="false" styleClass="warning" stylesheets="@css/bootstrap2.css" text="Ver detalles" />

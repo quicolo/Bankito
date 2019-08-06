@@ -116,6 +116,16 @@ public class ClienteViewController implements Initializable {
     }
     
     @FXML
+    public void accionRetirar(ActionEvent event) { 
+        CuentaModelo cuenta = cuentaTable.getSelectionModel().getSelectedItem();
+        if (cuenta != null) {
+            mainApp.goToDialogoRetirar(cuenta);
+        }
+        else 
+            alertaCuentaSinSeleccionar();
+    }
+    
+    @FXML
     public void alertaCuentaSinSeleccionar() {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("No hay cuenta seleccionada");

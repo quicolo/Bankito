@@ -9,6 +9,7 @@ import com.bankito.aplicacion.ClienteViewController;
 import com.bankito.aplicacion.DatosClienteDialogViewController;
 import com.bankito.aplicacion.IngresarDialogViewController;
 import com.bankito.aplicacion.LoginViewController;
+import com.bankito.aplicacion.RetirarDialogViewController;
 import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
 import com.bankito.servicio.ServicioBancario;
@@ -115,6 +116,25 @@ public class Main extends Application {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void goToDialogoRetirar(CuentaModelo cuenta) {
+        try {
+            Stage dialog = getNewDialogStage("Retirar dinero de tu cuenta corriente");
+            RetirarDialogViewController controller = 
+                    (RetirarDialogViewController) openNewDialogScene(ResourcePath.RETIRAR_DIALOG_VIEW, dialog);
+            
+            controller.setDialogStage(dialog);
+            controller.setMainApp(this);
+            controller.setModel(cuenta);
+            controller.initializeAfterSettingMain();
+            // Show the dialog and wait until the user closes it
+            dialog.showAndWait();
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
 
     private Stage getNewDialogStage(String tituloDialogo) {
         Stage dialogStage = new Stage();
