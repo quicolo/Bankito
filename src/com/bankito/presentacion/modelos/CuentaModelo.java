@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.presentacion;
+package com.bankito.presentacion.modelos;
 
 import com.bankito.dominio.Movimiento;
 import com.bankito.servicio.dto.CuentaDto;

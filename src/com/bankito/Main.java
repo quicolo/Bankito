@@ -9,7 +9,7 @@ import com.bankito.aplicacion.ClienteViewController;
 import com.bankito.aplicacion.DatosClienteDialogViewController;
 import com.bankito.aplicacion.IngresarDialogViewController;
 import com.bankito.aplicacion.LoginViewController;
-import com.bankito.presentacion.CuentaModelo;
+import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.ServicioBancarioFactory;
@@ -56,8 +56,9 @@ public class Main extends Application {
         String appName = AppConfiguration.getProperty("APP_NAME", "Bankito");
         stage.setTitle(appName);
         goToLogin();
-        stage.show();
         stage.centerOnScreen();
+        stage.show();
+        
     }
 
     public void goToLogin() {
@@ -155,9 +156,11 @@ public class Main extends Application {
             in.close();
         }
         Scene scene = new Scene(page);
+        stage.hide();
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.sizeToScene();
+        stage.show();
         return (Initializable) loader.getController();
     }
 

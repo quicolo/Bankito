@@ -6,7 +6,7 @@
 package com.bankito.aplicacion;
 
 import com.bankito.Main;
-import com.bankito.presentacion.CuentaModelo;
+import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.CuentaDto;

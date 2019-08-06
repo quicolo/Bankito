@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.presentacion;
+package com.bankito.presentacion.modelos;
 
+import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.aplicacion.ClienteViewController;
-import com.bankito.servicio.dto.CuentaDto;
 import java.util.Iterator;
-import java.util.List;
 import javafx.beans.property.FloatProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleFloatProperty;
@@ -22,7 +21,7 @@ import javafx.collections.ObservableList;
  */
 public class SituacionGlobalModelo {
 
-    private ClienteViewController controlador;
+    private final ClienteViewController controlador;
     private ObservableList<CuentaModelo> listaCuentas;
     private IntegerProperty numeroCuentas, numTotalMovimientos;
     private FloatProperty saldoTotal, ingresosTotal, gastosTotal;

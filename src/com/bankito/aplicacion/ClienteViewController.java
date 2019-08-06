@@ -7,9 +7,9 @@ package com.bankito.aplicacion;
 
 import com.bankito.Main;
 import com.bankito.dominio.exceptions.DominioException;
-import com.bankito.presentacion.CuentaModelo;
+import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
-import com.bankito.presentacion.SituacionGlobalModelo;
+import com.bankito.presentacion.modelos.SituacionGlobalModelo;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
@@ -20,9 +20,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.FloatProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -46,11 +43,8 @@ public class ClienteViewController implements Initializable {
 
     private Main mainApp;
     private ServicioBancario sb;
-    private ObservableList<CuentaModelo> listaCuentas;
     private SituacionGlobalModelo modeloGlobal;
 
-    @FXML
-    private ImageView abacoImg, cerdoImg, usuarioImg;
     @FXML
     private Label bienvenidoLbl, numCuentasLbl, saldoTotalLbl;
     @FXML
@@ -89,7 +83,8 @@ public class ClienteViewController implements Initializable {
         cargaSaludoBienvenida();
         cargaBotonesBarraSuperior();
         cargaSituacionGlobalModelo();
-        showSituacionGlobal();
+        showSituacionGlobal();   
+       
     }
 
     @FXML
