@@ -36,8 +36,13 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- *
- * @author Kike
+ * <h1>ServicioBancarioImpl</h1>
+ * Esta clase implementa la interfaz ServicioBancario desarrollando los distintos
+ * métodos que contiene. También utiliza las constantes definidas en la interfaz
+ * para establecer una comprobación de privilegios del usuario antes de realizar 
+ * cada una de las operaciones.
+ * 
+ * @author Enrique Royo Sánchez
  */
 class ServicioBancarioImpl implements ServicioBancario {
     

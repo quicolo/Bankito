@@ -5,7 +5,7 @@
  */
 package com.bankito.aplicacion;
 
-import com.bankito.Main;
+import com.bankito.MainFX;
 import com.bankito.dominio.exceptions.DominioException;
 import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
@@ -41,7 +41,7 @@ import javafx.stage.Stage;
  */
 public class ClienteViewController implements Initializable {
 
-    private Main mainApp;
+    private MainFX mainApp;
     private ServicioBancario sb;
     private SituacionGlobalModelo modeloGlobal;
 
@@ -125,6 +125,18 @@ public class ClienteViewController implements Initializable {
             alertaCuentaSinSeleccionar();
     }
     
+    
+    @FXML
+    public void accionVerDetallesCuenta(ActionEvent event) { 
+        CuentaModelo cuenta = cuentaTable.getSelectionModel().getSelectedItem();
+        if (cuenta != null) {
+            mainApp.goToDialogoVerDetallesCuenta(cuenta);
+        }
+        else 
+            alertaCuentaSinSeleccionar();
+    }
+    
+    
     @FXML
     public void alertaCuentaSinSeleccionar() {
         Alert alert = new Alert(AlertType.WARNING);
@@ -134,7 +146,7 @@ public class ClienteViewController implements Initializable {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
+        stage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
 
         alert.showAndWait();
     }
@@ -152,7 +164,7 @@ public class ClienteViewController implements Initializable {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
+        stage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
 
         alert.showAndWait();
     }
@@ -163,7 +175,7 @@ public class ClienteViewController implements Initializable {
         mainApp.goToDialogoDatosCliente();
     }
     
-    public void setMainApp(Main aplicacion) {
+    public void setMainApp(MainFX aplicacion) {
         this.mainApp = aplicacion;
     }
 
@@ -188,12 +200,12 @@ public class ClienteViewController implements Initializable {
 
     
     private void cargaBotonesBarraSuperior() {
-        Image imagen = new Image(Main.class.getResourceAsStream(ResourcePath.USER_BUTTON_ICON));
+        Image imagen = new Image(MainFX.class.getResourceAsStream(ResourcePath.USER_BUTTON_ICON));
         userBtn.setGraphic(new ImageView(imagen));
         Tooltip tip = new Tooltip("Accede a tus datos personales");
         userBtn.setTooltip(tip);
         
-        imagen = new Image(Main.class.getResourceAsStream(ResourcePath.POWEROFF_BUTTON_ICON));
+        imagen = new Image(MainFX.class.getResourceAsStream(ResourcePath.POWEROFF_BUTTON_ICON));
         cerrarSesionBtn.setGraphic(new ImageView(imagen));
         tip = new Tooltip("Cerrar sesión");
         cerrarSesionBtn.setTooltip(tip);

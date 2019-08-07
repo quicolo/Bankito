@@ -7,7 +7,6 @@
  */
 package com.bankito.dominio;
 
-import static com.bankito.dominio.Usuario.findByNombre;
 import com.bankito.dominio.exceptions.OperacionDuplicadaException;
 import com.bankito.dominio.exceptions.OperacionNoValidaException;
 import com.bankito.persistencia.dao.OperacionEntidadDao;
@@ -25,6 +24,39 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * <h1>Operacion</h1>
+ * Esta clase representa las posibles operaciones que puede hacer un usuario
+ * de un determinado PerfilUsuario de la capa de dominio.
+ * <p>
+ * Un objeto de esta clase presenta el siguiente comportamiento:<br>
+ * - save: es capaz de salvar (insertar/actualizar) su estado en la base de
+ * datos<br>
+ * - delete: es capaz de borrar su registro asociado en la base de datos<br>
+ * - isValid: es capaz de analizar si el objeto está en un estado válido<br>
+ * - equals: es capaz de compararse con otro objeto para ver si son iguales<br>
+ * - toString: compone una cadena de texto con sus características<br>
+ * - getters: obtienen el valor de las propiedades<br>
+ * - setters: establecen el valor de la propiedades<br>
+ * <p>
+ * Esta clase es null-safe, es decir, evita a toda costa que se pueda hacer un
+ * manejo de sus instancias de forma que alguno de los campos pueda contener un
+ * null indeseado.
+ * <p>
+ * Esta clase posee un campo público estático y final llamado NOT_FOUND que es
+ * un objeto de la clase Operacion que servirá para representar una consulta 
+ * a la base de datos que no devuelve resultado alguno.
+ * <p>
+ * Esta clase presenta los siguientes comportamientos como métodos
+ * estáticos:<br>
+ * - findByIdOperacion: recupera un objeto de la clase desde la BD por su
+ * IdOperacion<br>
+ * - findByNombre: recupera un objeto de la clase desde la BD por su nombre<br>
+ * - findAll: recupera todos los objetos de la clase desde la BD<br>
+ *
+ * @author Enrique Royo Sánchez
+ */
 public class Operacion implements Serializable {
 
     public static final Operacion NOT_FOUND = new Operacion("vacio", "vacio", "vacio");

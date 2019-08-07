@@ -7,6 +7,7 @@ package com.bankito;
 
 import com.bankito.aplicacion.ClienteViewController;
 import com.bankito.aplicacion.DatosClienteDialogViewController;
+import com.bankito.aplicacion.DetallesCuentaDialogViewController;
 import com.bankito.aplicacion.IngresarDialogViewController;
 import com.bankito.aplicacion.LoginViewController;
 import com.bankito.aplicacion.RetirarDialogViewController;
@@ -30,10 +31,30 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
+ * <h1>MainFX</h1>
+ * Esta clase es el punto de entrada de la aplicación y además extiende la clase
+ * javafx.application.Application. Esta herencia obliga a esta clase a realizar
+ * ciertas tareas sin poder delegarlas en otras clases:
+ * - Esta clase es la que debe crear la ventana (stage) principal de la aplicación
+ * - Es la responsable de crear nuevas ventanas o diálogos dependientes
+ *   de la ventana principal
+ * - Es la responsable de cambiar de escenas (scene) dentro cada una de las ventanas.
+ *   Esto obliga a que los distintos controladores del sistema tengan que llamar
+ *   a MainFX para realizar el cambio de ventana o de escena. Para ello, se 
+ *   implementan métodos del tipo goToXXX() que cargan la ventana o la escena
+ *   y devuelve una referencia al controlador correspondiente.
+ * <p>
+ * Por otro lado, esta clase se encarga de la carga inicial de la configuración 
+ * de la aplicación desde el fichero de configuración haciendo uso de la clase
+ * AppConfiguration.
+ * <p>
+ * Por último, dado que esta clase es el punto de comienzo y de retorno de las
+ * distintas vistas y controladores, se ha decidido utilizar como punto de 
+ * acceso a la referencia del objeto ServicioBancario que utiliza.
  *
- * @author Kike
+ * @author Enrique Royo Sánchez
  */
-public class Main extends Application {
+public class MainFX extends Application {
 
     private Stage stage;
     private ServicioBancario servicioBancario;
@@ -52,7 +73,7 @@ public class Main extends Application {
         this.stage = primaryStage;
         servicioBancario = ServicioBancarioFactory.create();
 
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
+        stage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
         
         String appName = AppConfiguration.getProperty("APP_NAME", "Bankito");
         stage.setTitle(appName);
@@ -67,7 +88,7 @@ public class Main extends Application {
             LoginViewController login = (LoginViewController) replaceSceneContent(ResourcePath.LOGIN_VIEW);
             login.setMainApp(this);
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainFX.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -78,7 +99,7 @@ public class Main extends Application {
             controller.setMainApp(this);
             controller.initializeAfterSettingMain(); 
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainFX.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -95,7 +116,7 @@ public class Main extends Application {
             // Show the dialog and wait until the user closes it
             dialog.showAndWait();
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainFX.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -113,7 +134,7 @@ public class Main extends Application {
             // Show the dialog and wait until the user closes it
             dialog.showAndWait();
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainFX.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -130,7 +151,7 @@ public class Main extends Application {
             // Show the dialog and wait until the user closes it
             dialog.showAndWait();
         } catch (Exception ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainFX.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -146,9 +167,9 @@ public class Main extends Application {
 
     private Initializable openNewDialogScene(String fxml, Stage dialogStage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        InputStream in = Main.class.getResourceAsStream(fxml);
+        InputStream in = MainFX.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
-        loader.setLocation(Main.class.getResource(fxml));
+        loader.setLocation(MainFX.class.getResource(fxml));
 
         AnchorPane page;
         try {
@@ -158,7 +179,7 @@ public class Main extends Application {
         }
         Scene scene = new Scene(page);
         dialogStage.setScene(scene);
-
+        dialogStage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
         dialogStage.centerOnScreen();
         dialogStage.sizeToScene();
         return (Initializable) loader.getController();
@@ -166,9 +187,9 @@ public class Main extends Application {
 
     private Initializable replaceSceneContent(String fxml) throws Exception {
         FXMLLoader loader = new FXMLLoader();
-        InputStream in = Main.class.getResourceAsStream(fxml);
+        InputStream in = MainFX.class.getResourceAsStream(fxml);
         loader.setBuilderFactory(new JavaFXBuilderFactory());
-        loader.setLocation(Main.class.getResource(fxml));
+        loader.setLocation(MainFX.class.getResource(fxml));
         AnchorPane page;
         try {
             page = (AnchorPane) loader.load(in);
@@ -190,6 +211,23 @@ public class Main extends Application {
 
     public void setServicioBancario(ServicioBancario servicio) {
         this.servicioBancario = servicio;
+    }
+
+    public void goToDialogoVerDetallesCuenta(CuentaModelo cuenta) {
+        try {
+            Stage dialog = getNewDialogStage("Detalles de tu cuenta corriente");
+            DetallesCuentaDialogViewController controller = 
+                    (DetallesCuentaDialogViewController) openNewDialogScene(ResourcePath.DETALLES_CUENTA_DIALOG_VIEW, dialog);
+            
+            controller.setDialogStage(dialog);
+            controller.setMainApp(this);
+            controller.setModel(cuenta);
+            controller.initializeAfterSettingMain();
+            // Show the dialog and wait until the user closes it
+            dialog.showAndWait();
+        } catch (Exception ex) {
+            Logger.getLogger(MainFX.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 

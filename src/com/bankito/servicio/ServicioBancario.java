@@ -20,8 +20,23 @@ import com.bankito.servicio.exceptions.ServicioException;
 import java.util.List;
 
 /**
- *
- * @author Kike
+ * <h1>ServicioBancario</h1>
+ * Esta interfaz especifica el conjunto de métodos que se deben desarrollar para 
+ * proporcionar un servicio bancario. La clase que implemente esta interfaz 
+ * utilizará las clases de la capa de Dominio para desarrollar su funcionalidad.
+ * Asimimo, también establece un conjunto de constantes públicas que identifican
+ * cada una de las operaciones posibles en la base de datos, de este modo los
+ * métodos que lleven asociados una de estas constantes deberán implementar una
+ * comprobación sobre los permisos que posee el usuario logado para realizar
+ * dicha operación y elevar una excepción si no se tuvieran suficientes privilegios.
+ * <p>
+ * La clase que implemente esta interfaz debe ser null-safe.
+ * <p>
+ * Se recomienda utilizar una clase de factoría para la creación de los objetos
+ * que implementan esta interfaz para ganar versatilidad y mantenibilidad en 
+ * el código que utilice el ServicioBancario
+ * 
+ * @author Enrique Royo Sánchez
  */
 public interface ServicioBancario {
     public static final String OPER_NUEVO_USUARIO = "NUEVO_USUARIO";

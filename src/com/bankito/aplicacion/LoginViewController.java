@@ -5,7 +5,7 @@
  */
 package com.bankito.aplicacion;
 
-import com.bankito.Main;
+import com.bankito.MainFX;
 import com.bankito.dominio.exceptions.DominioException;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
@@ -29,7 +29,7 @@ import javafx.scene.control.TextField;
  */
 public class LoginViewController implements Initializable {
     
-    private Main mainApp;
+    private MainFX mainApp;
 
     @FXML
     private Button entrarBtn;
@@ -72,7 +72,7 @@ public class LoginViewController implements Initializable {
         accionLogin(event);        
     }
     
-    public void setMainApp(Main aplicacion) {
+    public void setMainApp(MainFX aplicacion) {
         this.mainApp = aplicacion;
     }
 }

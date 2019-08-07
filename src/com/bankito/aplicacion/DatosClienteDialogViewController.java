@@ -5,7 +5,7 @@
  */
 package com.bankito.aplicacion;
 
-import com.bankito.Main;
+import com.bankito.MainFX;
 import com.bankito.presentacion.ResourcePath;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.ClienteDto;
@@ -32,7 +32,7 @@ public class DatosClienteDialogViewController implements Initializable {
     private Label nombreLbl, apellido1Lbl, apellido2Lbl, nifLbl, direccionLbl,
             fechaAltaLbl, nombreUsuarioLbl;
     private Stage dialogStage;
-    private Main mainApp;
+    private MainFX mainApp;
     private ServicioBancario sb;
     
     /**
@@ -47,14 +47,14 @@ public class DatosClienteDialogViewController implements Initializable {
         this.dialogStage = dialogStage;
     }
     
-    public void setMainApp(Main main) {
+    public void setMainApp(MainFX main) {
         mainApp = main;
     }
 
     public void initializeAfterSettingMain() {
         ClienteDto cli = null;
         try {
-            dialogStage.getIcons().add(new Image(Main.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
+            dialogStage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
             sb = mainApp.getServicioBancario();
             UsuarioDto user = sb.getUsuarioLogado();
             cli = sb.buscaClientePorIdUsuario(user.getIdUsuario());

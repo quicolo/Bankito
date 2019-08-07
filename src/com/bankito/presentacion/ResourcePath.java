@@ -20,6 +20,8 @@ public class ResourcePath {
     public static String DATOS_CLIENTE_DIALOG_VIEW = "presentacion/DatosClienteDialogView.fxml";
     public static String INGRESAR_DIALOG_VIEW = "presentacion/IngresarDialogView.fxml";
     public static String RETIRAR_DIALOG_VIEW = "presentacion/RetirarDialogView.fxml";
+    public static String DETALLES_CUENTA_DIALOG_VIEW = "presentacion/DetallesCuentaDialogView.fxml";
+    
     
     private ResourcePath(){}
     

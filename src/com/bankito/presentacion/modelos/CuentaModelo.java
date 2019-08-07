@@ -82,7 +82,7 @@ public final class CuentaModelo {
         Iterator<Movimiento> itera = listaMov.iterator();
         while(itera.hasNext()) {
             Movimiento m = itera.next();
-            if(m.getTipo() == Movimiento.TIPO_MOV_ENTRADA)
+            if(m.getTipo().equals(Movimiento.TIPO_MOV_ENTRADA))
                 ingresos = ingresos + m.getImporte();
             else
                 gastos = gastos + m.getImporte();

@@ -11,8 +11,19 @@ import java.util.Date;
 import java.util.Objects;
 
 /**
+ * <h1>ClienteDto</h1>
+ * Esta clase funciona como DTO (Data Transfer Object) dentro de la capa de 
+ * servicio de la aplicación. Los objetos DTO simplemente transportan datos de 
+ * una capa a otra ofreciendo normalmente los getters y setters. Normalmente 
+ * también presentan varias versiones de los constructores por versatilidad. 
+ * Nos ayudan a ocultar la complejidad de los objetos de la capa de Dominio
+ * utilizados en la capa de servicio.
+ * <p>
+ * Presenta una referencia a un objeto de la clase, NOT_FOUND, que sirve para 
+ * indicar que no se encontraron datos en una búsqueda o interacción con la
+ * capa de servicio. De este modo, nos evitamos utilizar valores nulos.
  *
- * @author Kike
+ * @author Enrique Royo Sánchez
  */
 public class ClienteDto {
 

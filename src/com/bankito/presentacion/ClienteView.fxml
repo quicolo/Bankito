@@ -65,7 +65,7 @@
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: linear-gradient(to bottom,#FFFFFF,#b3bef5);" stylesheets="@css/bootstrap2.css" BorderPane.alignment="CENTER">
                <children>
-                  <TabPane layoutX="31.0" layoutY="21.0" prefHeight="203.0" prefWidth="1148.0" styleClass="plain" stylesheets="@css/bootstrap2.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="488.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="31.0">
+                  <TabPane layoutX="31.0" layoutY="21.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="203.0" prefWidth="1148.0" styleClass="plain" stylesheets="@css/bootstrap2.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="488.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="31.0">
                     <tabs>
                       <Tab closable="false" text="Situación global">
                         <content>
@@ -131,7 +131,7 @@
                         <Insets />
                      </opaqueInsets>
                   </TabPane>
-                  <TabPane layoutX="31.0" layoutY="243.0" prefHeight="448.0" prefWidth="1148.0" styleClass="plain" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="243.0">
+                  <TabPane layoutX="31.0" layoutY="243.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="448.0" prefWidth="1148.0" styleClass="plain" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="31.0" AnchorPane.leftAnchor="31.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="243.0">
                     <tabs>
                       <Tab closable="false" text="Operaciones">
                         <content>
@@ -139,9 +139,9 @@
                                  <children>
                                     <TableView fx:id="cuentaTable" layoutX="26.0" layoutY="57.0" prefHeight="249.0" prefWidth="1090.0" stylesheets="@css/bootstrap2.css">
                                       <columns>
-                                        <TableColumn fx:id="numeroCuentaColumn" editable="false" prefWidth="451.0" text="Número de cuenta" />
-                                        <TableColumn fx:id="saldoColumn" editable="false" minWidth="0.0" prefWidth="271.0" text="Saldo" />
-                                          <TableColumn fx:id="numMovimientosColumn" editable="false" prefWidth="249.0" text="Número de movimientos" />
+                                        <TableColumn fx:id="numeroCuentaColumn" editable="false" prefWidth="412.0" text="Número de cuenta" />
+                                        <TableColumn fx:id="saldoColumn" editable="false" minWidth="0.0" prefWidth="310.0" text="Saldo" />
+                                          <TableColumn fx:id="numMovimientosColumn" editable="false" prefWidth="407.0" text="Número de movimientos" />
                                       </columns>
                                        <columnResizePolicy>
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -154,11 +154,26 @@
                                     </Label>
                                     <HBox layoutX="247.0" layoutY="334.0" spacing="40.0">
                                        <children>
-                                          <Button fx:id="ingresarBtn" layoutX="148.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionIngresar" styleClass="primary" stylesheets="@css/bootstrap2.css" text="Ingresar" />
-                                          <Button fx:id="retirarBtn" layoutX="258.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionRetirar" styleClass="success" stylesheets="@css/bootstrap2.css" text="Retirar" />
-                                          <Button fx:id="transferirBtn" layoutX="369.0" layoutY="319.0" mnemonicParsing="false" styleClass="danger" stylesheets="@css/bootstrap2.css" text="Transferir" />
-                                          <Button fx:id="verMovimBtn" layoutX="492.0" layoutY="319.0" mnemonicParsing="false" styleClass="info" stylesheets="@css/bootstrap2.css" text="Ver movimientos" />
-                                          <Button fx:id="verCuentaBtn" layoutX="684.0" layoutY="319.0" mnemonicParsing="false" styleClass="warning" stylesheets="@css/bootstrap2.css" text="Ver detalles" />
+                                          <Button fx:id="ingresarBtn" layoutX="148.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionIngresar" styleClass="primary" stylesheets="@css/bootstrap2.css" text="Ingresar">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor></Button>
+                                          <Button fx:id="retirarBtn" layoutX="258.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionRetirar" styleClass="success" stylesheets="@css/bootstrap2.css" text="Retirar">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor></Button>
+                                          <Button fx:id="transferirBtn" layoutX="369.0" layoutY="319.0" mnemonicParsing="false" styleClass="danger" stylesheets="@css/bootstrap2.css" text="Transferir">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor></Button>
+                                          <Button fx:id="verMovimBtn" layoutX="492.0" layoutY="319.0" mnemonicParsing="false" styleClass="info" stylesheets="@css/bootstrap2.css" text="Ver movimientos">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor></Button>
+                                          <Button fx:id="verCuentaBtn" layoutX="684.0" layoutY="319.0" mnemonicParsing="false" onAction="#accionVerDetallesCuenta" styleClass="warning" stylesheets="@css/bootstrap2.css" text="Ver detalles">
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor></Button>
                                        </children>
                                     </HBox>
                                  </children></AnchorPane>

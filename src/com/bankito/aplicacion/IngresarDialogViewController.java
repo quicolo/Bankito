@@ -5,7 +5,7 @@
  */
 package com.bankito.aplicacion;
 
-import com.bankito.Main;
+import com.bankito.MainFX;
 import com.bankito.presentacion.modelos.CuentaModelo;
 import com.bankito.presentacion.ResourcePath;
 import com.bankito.servicio.ServicioBancario;
@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  */
 public class IngresarDialogViewController implements Initializable {
 
-    private Main mainApp;
+    private MainFX mainApp;
     private Stage dialogStage;
     private ServicioBancario sb;
     private CuentaModelo cuentaModelo;
@@ -55,7 +55,7 @@ public class IngresarDialogViewController implements Initializable {
         this.dialogStage = dialogStage;
     }
     
-    public void setMainApp(Main main) {
+    public void setMainApp(MainFX main) {
         mainApp = main;
     }
     
@@ -122,7 +122,7 @@ public class IngresarDialogViewController implements Initializable {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
+        stage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
 
         alert.showAndWait();
     }
@@ -136,7 +136,7 @@ public class IngresarDialogViewController implements Initializable {
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
 
         // Add a custom icon.
-        stage.getIcons().add(new Image(Main.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
+        stage.getIcons().add(new Image(MainFX.class.getResourceAsStream(ResourcePath.BANKITO_ICON)));
 
         alert.showAndWait();
     }
