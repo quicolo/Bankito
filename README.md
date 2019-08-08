@@ -10,8 +10,13 @@ PROYECTO QUE SIMULA EL COMPORTAMIENTO DE UN GESTOR BANCARIO.
 **Tecnologías empleadas**: 
 - Lenguaje programación: java 8 SE
 - Base de datos: MySql
+- Motor de interfaz gráfica: JavaFX
 - Librería de pruebas: Junit
 - Generador capa de persistencia: Firestorm Dao
 - Control de versiones: git
 
-
+**Patrones de diseño utilizados**: 
+- DAO
+- DTO
+- MVC
+- Factory
