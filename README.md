@@ -1,4 +1,4 @@
-# MI BANKITO
+# BANKITO
 PROYECTO QUE SIMULA EL COMPORTAMIENTO DE UN GESTOR BANCARIO.
 
 **Objetivo**: implementar una aplicación que integre distintas técnicas y tecnologías utilizadas actualmente, sin utilizar ningún framework, para que sirva como una herramienta de reflexión y aprendizaje.
