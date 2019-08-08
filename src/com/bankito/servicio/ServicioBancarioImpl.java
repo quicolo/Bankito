@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito.servicio;
 
 import com.bankito.dominio.Cliente;
@@ -44,7 +39,7 @@ import java.util.Random;
  * 
  * @author Enrique Royo Sánchez
  */
-class ServicioBancarioImpl implements ServicioBancario {
+public class ServicioBancarioImpl implements ServicioBancario {
     
     public static final int COD_ENTIDAD_CONFIG = Integer.parseInt(AppConfiguration.getProperty("COD_ENTIDAD", "101"));
     public static final int COD_SUCURSAL_CONFIG = Integer.parseInt(AppConfiguration.getProperty("COD_SUCURSAL", "202"));

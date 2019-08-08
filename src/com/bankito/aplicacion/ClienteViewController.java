@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito.aplicacion;
 
 import com.bankito.MainFX;
@@ -35,10 +30,34 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
- *
- * @author Kike
- */
+* <h1>ClienteViewController</h1>
+* Esta clase representa al controlador de la vista que se encarga de la pantalla
+* principal de un usuario con el perfil de cliente.
+* <p>
+* Esta clase presenta propiedades de distintos tipos. Según su funcionalidad las
+* podemos clasificar en: 
+* - Propiedades asociadas a la interfaz gráfica: están anotadas con @FXML y se 
+*   asocian a objetos definidos en el archivo de interfaz gráfica .fxml. También
+*   la propiedad 'modeloGlobal' representa el modelo de datos que necesita la 
+*   vista FXML para funcionar, aplicándose el patrón MVC.<br>
+* - Propiedades asocidas a la aplicación: son referencias a la aplicación 
+*   principal (mainApp) y al objeto de ServicioBancario necesarias para poder
+*   cambiar las vistas y utilizar los servicios de las capas inferiores. 
+* <p>
+* Entre los métodos de la clase destacamos los siguientes:
+* - initialize: este método se llama automáticamente después de carga la vista
+*   FXML en pantalla y permite asociar valores iniciales a los controles de la vista<br>
+* - setMainApp: sirve para inyectar la referencia al objeto MainFX, que a su
+*   vez nos permitirá obtener la referencia al objeto ServicioBancario.<br>
+* - initializeAfterSettingMain: este método permite inicializar el modelo de datos
+*   que se utilizará en la vista una vez se tenga cargada la referencia a MainFX 
+*   y al ServicioBancario<br>
+* - Los del tipo accionXXX(): se encargan de procesar un evento producido por 
+*   la interfaz gráfica que pueden llaman a otro método de MainFX para cambiar
+*   la vista si corresponde (método goToXXX()).
+*
+* @author  Enrique Royo Sánchez
+*/
 public class ClienteViewController implements Initializable {
 
     private MainFX mainApp;
@@ -84,7 +103,6 @@ public class ClienteViewController implements Initializable {
         cargaBotonesBarraSuperior();
         cargaSituacionGlobalModelo();
         showSituacionGlobal();   
-       
     }
 
     @FXML
@@ -227,5 +245,4 @@ public class ClienteViewController implements Initializable {
             Logger.getLogger(ClienteViewController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 }

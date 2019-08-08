@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito.aplicacion;
 
 import com.bankito.MainFX;
@@ -23,10 +18,28 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
- * FXML Controller class
- *
- * @author Kike
- */
+* <h1>LoginViewController</h1>
+* Esta clase representa al controlador de la vista que se encarga de pedir el 
+* login al usuario. Es la pantalla de inicio de la aplicación.
+* <p>
+* Esta clase presenta propiedades de distintos tipos. Según su funcionalidad las
+* podemos clasificar en: 
+* - Propiedades asociadas a la interfaz gráfica: están anotadas con @FXML y se 
+*   asocian a objetos definidos en el archivo de interfaz gráfica .fxml.<br>
+* - Propiedad asocida a la aplicación: son referencias a la aplicación 
+*   principal (mainApp)
+* <p>
+* Entre los métodos de la clase destacamos los siguientes:
+* - initialize: este método se llama automáticamente después de carga la vista
+*   FXML en pantalla y permite asociar valores iniciales a los controles de la vista<br>
+* - setMainApp: sirve para inyectar la referencia al objeto MainFX, que a su
+*   vez nos permitirá obtener la referencia al objeto ServicioBancario.<br>
+* - Los del tipo accionXXX(): se encargan de procesar un evento producido por 
+*   la interfaz gráfica que pueden llaman a otro método de MainFX para cambiar
+*   la vista si corresponde (método goToXXX()).
+*
+* @author  Enrique Royo Sánchez
+*/
 public class LoginViewController implements Initializable {
     
     private MainFX mainApp;

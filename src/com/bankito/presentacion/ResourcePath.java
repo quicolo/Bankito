@@ -1,14 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito.presentacion;
 
 /**
- *
- * @author Kike
- */
+* <h1>ResourcePath</h1>
+* Esta clase funciona como un contenedor que centraliza las rutas a los distintos
+* recursos necesarios para la interfaz gráfica de usuario que utiliza la aplicación. 
+* <p>
+* Estos recursos se almacenan como cadenas de texto públicas y estáticas para
+* facilitar el acceso a las mismas desde cualquier punto de la aplicación.
+* <p>
+* Asimismo, se incluye un constructor privado sin parámetros para que dicha clase
+* no pueda ser instanciada.
+* 
+* @author  Enrique Royo Sánchez
+*/
 public class ResourcePath {
     public static String BANKITO_ICON = "presentacion/images/Bankito Logo app.png";
     public static String USER_BUTTON_ICON = "presentacion/images/user46x46.png";

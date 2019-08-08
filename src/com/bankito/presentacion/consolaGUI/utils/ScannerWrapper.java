@@ -69,8 +69,8 @@ public class ScannerWrapper {
 
     /**
      * Get an int of input from a Scanner object
-     * @param lLimit int Lower limit (user input >= lower limit)
-     * @param uLimit int Upper limit (user input <= upper limit)
+     * @param lLimit int Lower limit (user input &gt;= lower limit)
+     * @param uLimit int Upper limit (user input &lt;= upper limit)
      * @return int input from Scanner
      */
     public int getInt(int lLimit, int uLimit) {
@@ -97,7 +97,7 @@ public class ScannerWrapper {
     
     /**
      * Get an int of input from a Scanner object
-     * @param lLimit int Lower limit (user input > lower limit)
+     * @param lLimit int Lower limit (user input &gt; lower limit)
      * @return int input from Scanner
      */
     public int getIntGreaterThan(int lLimit) {
@@ -124,7 +124,7 @@ public class ScannerWrapper {
     
     /**
      * Get an int of input from a Scanner object
-     * @param uLimit int Upper limit (user input < upper limit)
+     * @param uLimit int Upper limit (user input &lt; upper limit)
      * @return int input from Scanner
      */
     public int getIntLessThan(int uLimit) {
@@ -174,8 +174,8 @@ public class ScannerWrapper {
 
     /**
      * Get an long of input from a Scanner object
-     * @param lLimit long Lower limit (user input >= lower limit)
-     * @param uLimit long Upper limit (user input <= upper limit)
+     * @param lLimit long Lower limit (user input &gt;= lower limit)
+     * @param uLimit long Upper limit (user input &lt;= upper limit)
      * @return long input from Scanner
      */
     public long getLong(long lLimit, long uLimit) {
@@ -202,7 +202,7 @@ public class ScannerWrapper {
     
     /**
      * Get an long of input from a Scanner object
-     * @param lLimit long Lower limit (user input > lower limit)
+     * @param lLimit long Lower limit (user input &gt; lower limit)
      * @return long input from Scanner
      */
     public long getLongGreaterThan(long lLimit) {
@@ -229,7 +229,7 @@ public class ScannerWrapper {
     
     /**
      * Get an long of input from a Scanner object
-     * @param uLimit long Upper limit (user input < upper limit)
+     * @param uLimit long Upper limit (user input &lt; upper limit)
      * @return long input from Scanner
      */
     public long getLongLessThan(long uLimit) {
@@ -282,8 +282,8 @@ public class ScannerWrapper {
 
     /**
      * Get a double of input from a Scanner object
-     * @param lLimit double Lower limit (user input >= lower limit)
-     * @param uLimit double Upper limit (user input >= upper limit)
+     * @param lLimit double Lower limit (user input &gt;= lower limit)
+     * @param uLimit double Upper limit (user input &lt;= upper limit)
      * @return double input from Scanner
      */
     public double getDouble(double lLimit, double uLimit) {
@@ -310,7 +310,7 @@ public class ScannerWrapper {
 
     /**
      * Get an double of input from a Scanner object
-     * @param lLimit long Lower limit (user input > lower limit)
+     * @param lLimit long Lower limit (user input &gt; lower limit)
      * @return long input from Scanner
      */
     public double getDoubleGreaterThan(double lLimit) {
@@ -337,7 +337,7 @@ public class ScannerWrapper {
     
     /**
      * Get an double of input from a Scanner object
-     * @param uLimit long Upper limit (user input < upper limit)
+     * @param uLimit long Upper limit (user input &lt; upper limit)
      * @return long input from Scanner
      */
     public double getDoubleLessThan(double uLimit) {
@@ -408,8 +408,8 @@ public class ScannerWrapper {
     
     /**
      * Get a String line of input from a Scanner object
-     * @param minLength min length limit (user input length >= min length)
-     * @param maxLength max length limit (user input length >= max length)
+     * @param minLength min length limit (user input length &gt;= min length)
+     * @param maxLength max length limit (user input length &lt;= max length)
      * @return String from single line of user input from Scanner
      */
     public String getString(int minLength, int maxLength) {
@@ -435,7 +435,7 @@ public class ScannerWrapper {
     
     /**
      * Get a String line of input from a Scanner object
-     * @param minLength min length limit (user input length > min length)
+     * @param minLength min length limit (user input length &gt; min length)
      * @return String from single line of user input from Scanner
      */
     public String getStringLengthGreaterThan(int minLength) {
@@ -461,7 +461,7 @@ public class ScannerWrapper {
     
     /**
      * Get a String line of input from a Scanner object
-     * @param maxLength max length limit (user input length < max length)
+     * @param maxLength max length limit (user input length &lt; max length)
      * @return String from single line of user input from Scanner
      */
     public String getStringLengthLessThan(int maxLength) {

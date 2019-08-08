@@ -296,7 +296,7 @@ public class Cuenta implements Serializable {
     /**
      * Este método devuelve una copia de la lista de movimientos de la cuenta
      *
-     * @return List<Movimiento> devuelve una copia de los movimientos de la
+     * @return List &lt;Movimiento&gt; devuelve una copia de los movimientos de la
      * cuenta
      */
     public List<Movimiento> getMovimientos() {

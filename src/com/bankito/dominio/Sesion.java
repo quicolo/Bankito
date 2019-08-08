@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito.dominio;
 
 import com.bankito.dominio.exceptions.SesionNoValidaException;
@@ -212,7 +207,7 @@ public class Sesion implements Serializable {
     /**
      * Method 'setUsuarioIdUsuario'
      *
-     * @param usuario
+     * @param usuarioIdUsuario
      */
     public void setUsuarioIdUsuario(int usuarioIdUsuario) {
         this.usuarioIdUsuario = usuarioIdUsuario;

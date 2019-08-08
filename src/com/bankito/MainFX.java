@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito;
 
 import com.bankito.aplicacion.ClienteViewController;
@@ -34,10 +29,10 @@ import javafx.stage.Stage;
  * <h1>MainFX</h1>
  * Esta clase es el punto de entrada de la aplicación y además extiende la clase
  * javafx.application.Application. Esta herencia obliga a esta clase a realizar
- * ciertas tareas sin poder delegarlas en otras clases:
- * - Esta clase es la que debe crear la ventana (stage) principal de la aplicación
+ * ciertas tareas sin poder delegarlas en otras clases:<br>
+ * - Esta clase es la que debe crear la ventana (stage) principal de la aplicación<br>
  * - Es la responsable de crear nuevas ventanas o diálogos dependientes
- *   de la ventana principal
+ *   de la ventana principal<br>
  * - Es la responsable de cambiar de escenas (scene) dentro cada una de las ventanas.
  *   Esto obliga a que los distintos controladores del sistema tengan que llamar
  *   a MainFX para realizar el cambio de ventana o de escena. Para ello, se 
@@ -109,8 +104,7 @@ public class MainFX extends Application {
             Stage dialog = getNewDialogStage("Datos personales");
             DatosClienteDialogViewController controller = 
                     (DatosClienteDialogViewController) openNewDialogScene(ResourcePath.DATOS_CLIENTE_DIALOG_VIEW, dialog);
-            
-            controller.setDialogStage(dialog);
+
             controller.setMainApp(this);
             controller.initializeAfterSettingMain();
             // Show the dialog and wait until the user closes it

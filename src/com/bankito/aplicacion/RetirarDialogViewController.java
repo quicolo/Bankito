@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.bankito.aplicacion;
 
 import com.bankito.MainFX;
@@ -24,10 +19,47 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
- * FXML Controller class
- *
- * @author Kike
- */
+* <h1>RetirarDialogViewController</h1>
+* Esta clase representa al controlador de la vista que se encarga de mostrar
+* una nueva ventana (diálogo) solicita los datos para poder realizar una retirada
+* de dinero de la cuenta escogida. 
+* <p>
+* Esta clase presenta propiedades de distintos tipos. Según su funcionalidad las
+* podemos clasificar en: <br>
+* - Propiedades asociadas a la interfaz gráfica: están anotadas con @FXML y se 
+*   asocian a objetos definidos en el archivo de interfaz gráfica .fxml. También
+*   la propiedad 'dialogStage' que es la referencia a la nueva ventana abierta, esta
+*   propiedad se necesita para cerrarla cuando se pulse el botón 'Aceptar' o 
+*   'Cancelar'. También se guarda una referencia al modelo de datos que necesita la vista
+*   para poder rellenarse.<br>
+* - Propiedades asocidas a la aplicación: son referencias a la aplicación 
+*   principal (mainApp) y al objeto de ServicioBancario necesarias para poder
+*   cambiar las vistas y utilizar los servicios de las capas inferiores. 
+* <p>
+* Entre los métodos de la clase destacamos los siguientes:<br>
+* - initialize: este método se llama automáticamente después de carga la vista
+*   FXML en pantalla y permite asociar valores iniciales a los controles de la vista<br>
+* - setMainApp: sirve para inyectar la referencia al objeto MainFX, que a su
+*   vez nos permitirá obtener la referencia al objeto ServicioBancario.<br>
+* - setDialogStage: sirve para inyectar la referencia a la nueva ventana stage
+*   para que pueda ser cerrada cuando corresponda.<br>
+* - initializeAfterSettingMain: este método permite inicializar el modelo de datos
+*   que se utilizará en la vista una vez se tenga cargada la referencia a MainFX 
+*   y al ServicioBancario<br>
+* - Los del tipo accionXXX(): se encargan de procesar un evento producido por 
+*   la interfaz gráfica que pueden llaman a otro método de MainFX para cambiar
+*   la vista si corresponde (método goToXXX()).<br>
+* - validaDatosUsuario: valida que los datos introducidos por el usuario sean
+*   válidos para realizar la operación de ingreso.<br>
+* - realizaRetirada: realiza la operación de retirada de cuenta usando la referencia
+*   a ServicioBancario obtenida.<br>
+* - actualizaModelo: actualiza el modelo con la nueva información fruto de haber
+*   realizado la operación de retirada. Este método llama al método recalcula()
+*   de la CuentaModelo que a su vez propagará los cambios a todo el objeto 
+*   SituacionGlobalModelo
+*
+* @author  Enrique Royo Sánchez
+*/
 public class RetirarDialogViewController implements Initializable {
 
     private MainFX mainApp;
