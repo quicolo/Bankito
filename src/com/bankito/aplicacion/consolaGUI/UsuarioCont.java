@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.aplicacion;
+package com.bankito.aplicacion.consolaGUI;
 
 import com.bankito.dominio.exceptions.DominioException;
 import com.bankito.dominio.exceptions.UsuarioDuplicadoException;
@@ -12,7 +12,7 @@ import com.bankito.dominio.exceptions.UsuarioNoValidoException;
 import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
-import com.bankito.presentacion.UsuarioVista;
+import com.bankito.presentacion.consolaGUI.UsuarioVista;
 import com.bankito.servicio.dto.PerfilUsuarioDto;
 import com.bankito.servicio.exceptions.OperationNotAllowedException;
 import com.bankito.servicio.exceptions.ServicioException;

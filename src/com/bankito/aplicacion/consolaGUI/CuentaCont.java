@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.aplicacion;
+package com.bankito.aplicacion.consolaGUI;
 
 import com.bankito.dominio.Movimiento;
 import com.bankito.dominio.exceptions.ClienteNoValidoException;
@@ -11,8 +11,8 @@ import com.bankito.dominio.exceptions.CuentaNoValidaException;
 import com.bankito.servicio.ServicioBancarioFactory;
 import com.bankito.servicio.ServicioBancario;
 import com.bankito.servicio.dto.UsuarioDto;
-import com.bankito.presentacion.CuentaVista;
-import com.bankito.presentacion.CuentaVista;
+import com.bankito.presentacion.consolaGUI.CuentaVista;
+import com.bankito.presentacion.consolaGUI.CuentaVista;
 import com.bankito.servicio.dto.ClienteDto;
 import com.bankito.servicio.dto.CuentaDto;
 import com.bankito.servicio.exceptions.OperationNotAllowedException;

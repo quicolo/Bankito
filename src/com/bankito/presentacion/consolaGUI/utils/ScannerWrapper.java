@@ -1,4 +1,4 @@
-package com.bankito.presentacion.utils;
+package com.bankito.presentacion.consolaGUI.utils;
 
 import java.util.InputMismatchException;
 import java.util.Objects;

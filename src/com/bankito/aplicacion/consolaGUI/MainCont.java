@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.aplicacion;
+package com.bankito.aplicacion.consolaGUI;
 
 import com.bankito.servicio.ServicioBancario;
-import com.bankito.presentacion.MainVista;
+import com.bankito.presentacion.consolaGUI.MainVista;
 import com.bankito.servicio.ServicioBancarioFactory;
 
 /**

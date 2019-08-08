@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.bankito.presentacion;
+package com.bankito.presentacion.consolaGUI;
 
-import com.bankito.presentacion.utils.*;
+import com.bankito.presentacion.consolaGUI.utils.Menu;
+import com.bankito.presentacion.consolaGUI.utils.MenuElement;
 import com.bankito.servicio.dto.ClienteDto;
 import java.util.List;
 
